@@ -207,56 +207,160 @@ export function FavoritesPageSkeleton() {
   );
 }
 
-export function SearchFormSkeleton() {
-  return (
-    <div className="w-full space-y-5">
-      {/* Search input */}
-      <div className="relative">
-        <div className="relative flex items-center">
-          <div className="absolute left-4 h-5 w-5 rounded-full bg-[#2d2d2d] animate-pulse" />
-          <div className="w-full h-14 rounded-xl border-2 border-[#2d2d2d] bg-[#1a1a1a] animate-pulse" />
-        </div>
-        <div className="mt-3 h-11 w-full rounded-xl bg-[#2d2d2d] animate-pulse" />
-      </div>
+const POPULAR_SEARCH_SKELETONS = {
+  player: [
+    "Cristiano Ronaldo",
+    "Lionel Messi",
+    "Neymar",
+    "Erling Haaland",
+    "Kylian Mbappe",
+    "Jude Bellingham",
+  ],
+  team: [
+    "Real Madrid",
+    "Manchester United",
+    "Barcelona",
+    "Bayern Munich",
+    "Liverpool",
+    "Paris Saint Germain",
+  ],
+} as const;
 
-      {/* Popular searches */}
-      <div className="flex flex-col">
-        <div className="h-4 w-32 rounded-lg bg-[#2d2d2d] animate-pulse mb-3" />
-        <div className="flex flex-wrap gap-2">
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <div
-              key={i}
-              className="h-9 w-28 rounded-lg border border-[#2d2d2d] bg-[#1a1a1a] animate-pulse"
-            />
-          ))}
-        </div>
+function PopularSearchesSkeleton({ names }: { names: readonly string[] }) {
+  return (
+    <div className="flex flex-col">
+      <div className="mb-3 h-4 w-24 rounded bg-[#2d2d2d] animate-pulse" />
+      <div className="flex flex-wrap gap-2">
+        {names.map((name) => (
+          <div
+            key={name}
+            className="rounded-lg border border-[#2d2d2d] bg-[#1a1a1a] px-3 py-2 text-xs font-medium animate-pulse"
+          >
+            <span className="invisible">{name}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-export function HeroSectionSkeleton() {
+export function SearchFormSkeleton({
+  searchType = "player",
+}: {
+  searchType?: "player" | "team";
+}) {
+  const names = POPULAR_SEARCH_SKELETONS[searchType];
+
+  return (
+    <div className="w-full space-y-5">
+      <div className="flex lg:hidden flex-col">
+        <PopularSearchesSkeleton names={names} />
+      </div>
+
+      <div>
+        <div className="relative flex items-center">
+          <div className="pointer-events-none absolute left-4 h-5 w-5 rounded bg-[#2d2d2d] animate-pulse" />
+          <div className="w-full rounded-xl border-2 border-[#2d2d2d] bg-[#1a1a1a] py-4 pl-12 pr-12">
+            <div className="h-6 w-28 rounded bg-[#2d2d2d] animate-pulse" />
+          </div>
+        </div>
+        <div className="mt-3 h-[50px] w-full rounded-xl bg-[#ff6b35]/25 animate-pulse" />
+      </div>
+
+      <div className="hidden lg:flex flex-col">
+        <PopularSearchesSkeleton names={names} />
+      </div>
+    </div>
+  );
+}
+
+export function HeroSectionSkeleton({
+  variant = "player",
+}: {
+  variant?: "player" | "team";
+}) {
+  const isTeam = variant === "team";
+
   return (
     <div className="space-y-6">
-      {/* Hero section */}
       <div className="relative">
-        <div className="h-8 w-40 rounded-full bg-[#ff6b35]/10 border border-[#ff6b35]/20 animate-pulse mb-5" />
-        <div className="space-y-4">
-          <div className="h-16 w-3/4 rounded-lg bg-[#2d2d2d] animate-pulse" />
-          <div className="h-6 w-full rounded-lg bg-[#242424] animate-pulse" />
-          <div className="h-6 w-2/3 rounded-lg bg-[#242424] animate-pulse" />
-        </div>
-        <div className="flex items-center gap-4 mt-6">
-          <div className="h-5 w-32 rounded-lg bg-[#242424] animate-pulse" />
-          <div className="h-5 w-32 rounded-lg bg-[#242424] animate-pulse" />
+        <div className="absolute -top-2 -left-2 w-20 h-20 bg-[#ff6b35]/10 rounded-full blur-2xl" />
+        <div className="relative">
+          {isTeam && (
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ff6b35]/10 border border-[#ff6b35]/20 mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ff6b35]/50 animate-pulse" />
+              <div className="h-3 w-24 rounded bg-[#ff6b35]/20 animate-pulse" />
+            </div>
+          )}
+
+          <div className={`space-y-2 ${isTeam ? "mb-4" : "mt-4"}`}>
+            <div className="h-10 sm:h-12 w-40 sm:w-48 rounded-lg bg-[#2d2d2d] animate-pulse" />
+            <div className="h-10 sm:h-12 w-56 sm:w-72 rounded-lg bg-[#2d2d2d] animate-pulse" />
+          </div>
+
+          <div className="max-w-md space-y-2 mb-6">
+            <div className="h-4 w-full rounded bg-[#242424] animate-pulse" />
+            <div className="h-4 w-11/12 rounded bg-[#242424] animate-pulse" />
+            <div className="h-4 w-2/3 rounded bg-[#242424] animate-pulse" />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-[#ffd700]/40 animate-pulse" />
+              <div className="h-4 w-24 rounded bg-[#242424] animate-pulse" />
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-[#ff6b35]/40 animate-pulse" />
+              <div className="h-4 w-20 rounded bg-[#242424] animate-pulse" />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Search Form */}
-      <SearchFormSkeleton />
+      <SearchFormSkeleton searchType={variant} />
 
-      {/* Attribution */}
-      <div className="h-4 w-48 rounded-lg bg-[#242424] animate-pulse" />
+      <div
+        className={`h-3 w-48 rounded bg-[#242424] animate-pulse ${
+          isTeam ? "" : "hidden lg:block"
+        }`}
+      />
+    </div>
+  );
+}
+
+export function SearchPageSkeleton({
+  variant = "player",
+}: {
+  variant?: "player" | "team";
+}) {
+  const isTeam = variant === "team";
+
+  return (
+    <div
+      className={`w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 items-start ${
+        isTeam ? "gap-8 lg:gap-10" : "lg:gap-10"
+      }`}
+    >
+      <aside className="w-full lg:col-span-7">
+        <div className="lg:sticky lg:top-[76px] space-y-6">
+          <HeroSectionSkeleton variant={variant} />
+        </div>
+      </aside>
+
+      <section className={`w-full lg:col-span-5 ${isTeam ? "mt-8 lg:mt-0" : ""}`}>
+        <div className="flex items-center justify-between gap-3 border-b border-[#2d2d2d] pb-4 mb-6">
+          <div className="space-y-2">
+            <div className="h-5 w-36 rounded-lg bg-[#2d2d2d] animate-pulse" />
+            <div className="h-3 w-48 rounded bg-[#242424] animate-pulse" />
+          </div>
+          <div className="h-9 w-14 rounded-lg border border-[#2d2d2d] bg-[#1a1a1a] animate-pulse" />
+        </div>
+        {isTeam ? (
+          <TeamListSkeleton count={1} maxColumns={1} />
+        ) : (
+          <PlayerListSkeleton count={1} maxColumns={1} />
+        )}
+      </section>
     </div>
   );
 }

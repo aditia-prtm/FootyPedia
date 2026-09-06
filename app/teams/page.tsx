@@ -20,7 +20,7 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
   if (query) {
     teams = await searchTeams(query);
   } else {
-    teams = await searchTeams("Manchester United");
+    teams = await searchTeams("Real Madrid");
     isFeatured = true;
   }
 
@@ -30,7 +30,7 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
       {/* ── LEFT PANEL ── Search & Context */}
       <aside className="w-full lg:col-span-7">
         <div className="lg:sticky lg:top-[76px] space-y-6">
-          <Suspense fallback={<HeroSectionSkeleton />}>
+          <Suspense fallback={<HeroSectionSkeleton variant="team" />}>
             {/* Hero section */}
             <div className="relative">
               <div className="absolute -top-2 -left-2 w-20 h-20 bg-[#ff6b35]/10 rounded-full blur-2xl" />

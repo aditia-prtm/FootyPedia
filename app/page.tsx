@@ -25,23 +25,17 @@ export default async function Home({ searchParams }: HomeProps) {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+    <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 lg:gap-10 items-start">
 
       {/* ── LEFT PANEL ── Search & Context */}
       <aside className="w-full lg:col-span-7">
         <div className="lg:sticky lg:top-[76px] space-y-6">
-          <Suspense fallback={<HeroSectionSkeleton />}>
+          <Suspense fallback={<HeroSectionSkeleton variant="player" />}>
             {/* Hero section - more personality */}
             <div className="relative">
               <div className="absolute -top-2 -left-2 w-20 h-20 bg-[#ff6b35]/10 rounded-full blur-2xl" />
               <div className="relative">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ff6b35]/10 border border-[#ff6b35]/20 mb-5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#ff6b35] animate-pulse" />
-                  <span className="text-[11px] font-medium text-[#ff6b35] uppercase tracking-wider">Database Pemain</span>
-                </div>
-                
-  
-                <h1 className="text-4xl sm:text-5xl font-bold text-[#f5f5f5] leading-tight mb-4" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+                <h1 className="text-4xl sm:text-5xl font-bold text-[#f5f5f5] leading-tight mt-4" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
                   Temukan<br />
                   <span className="text-[#ff6b35]">Legenda</span> Bola
                 </h1>
@@ -67,7 +61,7 @@ export default async function Home({ searchParams }: HomeProps) {
             <SearchForm initialQuery={query} />
 
             {/* Attribution */}
-            <p className="text-xs text-[#5a5a5a]">
+            <p className="hidden lg:flex gap-1 text-xs text-[#5a5a5a]">
               Data powered by{" "}
               <a
                 href="https://www.thesportsdb.com"
@@ -83,7 +77,7 @@ export default async function Home({ searchParams }: HomeProps) {
       </aside>
 
       {/* ── RIGHT PANEL ── Results */}
-      <section className="w-full lg:col-span-5 mt-8 lg:mt-0">
+      <section className="w-full lg:col-span-5">
         {/* Results header */}
         <div className="flex items-center justify-between gap-3 border-b border-[#2d2d2d] pb-4 mb-6">
           <div className="min-w-0">

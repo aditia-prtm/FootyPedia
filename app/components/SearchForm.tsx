@@ -19,8 +19,8 @@ const POPULAR_SEARCHES = {
     "Jude Bellingham",
   ],
   team: [
-    "Manchester United",
     "Real Madrid",
+    "Manchester United",
     "Barcelona",
     "Bayern Munich",
     "Liverpool",
@@ -60,6 +60,30 @@ export default function SearchForm({ initialQuery = "", searchType = "player" }:
 
   return (
     <div className="w-full space-y-5">
+      {/* Popular searches */}
+      <div className="flex lg:hidden flex-col">
+        <p className="text-xs text-[#5a5a5a] mb-3 font-medium uppercase tracking-wider">Sering dicari</p>
+        <div className="flex flex-wrap gap-2">
+          {popularSearches.map((name: string) => {
+            const isActive = query.toLowerCase() === name.toLowerCase();
+            return (
+              <button
+                key={name}
+                type="button"
+                onClick={() => handleSuggestionClick(name)}
+                className={`rounded-lg px-3 py-2 text-xs font-medium transition-all border ${
+                  isActive
+                    ? "border-[#ff6b35] bg-[#ff6b35]/10 text-[#ff6b35]"
+                    : "border-[#2d2d2d] bg-[#1a1a1a] text-[#8a8a8a] hover:border-[#3d3d3d] hover:text-[#f5f5f5]"
+                }`}
+              >
+                {name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Search input */}
       <form onSubmit={handleSubmit} className="relative">
         <div className="relative flex items-center">
@@ -91,7 +115,7 @@ export default function SearchForm({ initialQuery = "", searchType = "player" }:
       </form>
 
       {/* Popular searches */}
-      <div className="flex flex-col">
+      <div className="hidden lg:flex flex-col">
         <p className="text-xs text-[#5a5a5a] mb-3 font-medium uppercase tracking-wider">Sering dicari</p>
         <div className="flex flex-wrap gap-2">
           {popularSearches.map((name: string) => {
