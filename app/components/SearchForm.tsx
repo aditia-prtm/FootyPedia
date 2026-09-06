@@ -6,20 +6,36 @@ import { Search, X } from "lucide-react";
 
 interface SearchFormProps {
   initialQuery?: string;
+  searchType?: "player" | "team";
 }
 
-const POPULAR_SEARCHES = [
-  "Cristiano Ronaldo",
-  "Lionel Messi",
-  "Neymar",
-  "Erling Haaland",
-  "Kylian Mbappe",
-  "Jude Bellingham",
-];
+const POPULAR_SEARCHES = {
+  player: [
+    "Cristiano Ronaldo",
+    "Lionel Messi",
+    "Neymar",
+    "Erling Haaland",
+    "Kylian Mbappe",
+    "Jude Bellingham",
+  ],
+  team: [
+    "Manchester United",
+    "Real Madrid",
+    "Barcelona",
+    "Bayern Munich",
+    "Liverpool",
+    "Paris Saint Germain",
+  ],
+};
 
-export default function SearchForm({ initialQuery = "" }: SearchFormProps) {
+export default function SearchForm({ initialQuery = "", searchType = "player" }: SearchFormProps) {
   const [query, setQuery] = useState(initialQuery);
   const router = useRouter();
+
+  const basePath = searchType === "team" ? "/teams" : "/";
+  const placeholder = searchType === "team" ? "Cari klub..." : "Cari pemain...";
+  const buttonText = searchType === "team" ? "Cari Klub" : "Cari Pemain";
+  const popularSearches = POPULAR_SEARCHES[searchType];
 
   // Keep the input & active popular-search highlight in sync with the URL,
   // so they reset when the Reset button (or any navigation) clears ?q=.
@@ -31,88 +47,64 @@ export default function SearchForm({ initialQuery = "" }: SearchFormProps) {
     e.preventDefault();
     const trimmed = query.trim();
     if (trimmed) {
-      router.push(`/?q=${encodeURIComponent(trimmed)}`);
+      router.push(`${basePath}?q=${encodeURIComponent(trimmed)}`);
     } else {
-      router.push("/");
+      router.push(basePath);
     }
   };
 
   const handleSuggestionClick = (name: string) => {
     setQuery(name);
-    router.push(`/?q=${encodeURIComponent(name)}`);
+    router.push(`${basePath}?q=${encodeURIComponent(name)}`);
   };
 
   return (
-    <div className="w-full space-y-4">
-      {/* Mobile Popular searches */}
-      <div className="lg:hidden flex flex-col">
-        <p className="text-[11px] text-[#475569] mb-2 uppercase tracking-wider">Populer</p>
-        <div className="flex flex-wrap gap-1.5">
-          {POPULAR_SEARCHES.map((name) => {
-            const isActive = query.toLowerCase() === name.toLowerCase();
-            return (
-              <button
-                key={name}
-                type="button"
-                onClick={() => handleSuggestionClick(name)}
-                className={`rounded px-2.5 py-1 text-[11px] font-medium transition border ${
-                  isActive
-                    ? "border-[#065f46] bg-[#022c22] text-[#34d399]"
-                    : "border-[#1e2d3d] bg-[#111827] text-[#64748b] hover:border-[#2a3d52] hover:text-slate-300"
-                }`}
-              >
-                {name}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
+    <div className="w-full space-y-5">
       {/* Search input */}
-      <form onSubmit={handleSubmit} className="flex items-center gap-2">
-        <div className="relative flex-1">
-          <Search className="pointer-events-none absolute inset-y-0 left-3 my-auto h-4 w-4 text-[#475569]" />
+      <form onSubmit={handleSubmit} className="relative">
+        <div className="relative flex items-center">
+          <Search className="pointer-events-none absolute left-4 h-5 w-5 text-[#5a5a5a]" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Nama pemain"
-            className="w-full rounded-md border border-[#1e2d3d] bg-[#111827] py-2.5 pl-9 pr-9 text-sm text-slate-200 placeholder-[#334155] transition focus:border-[#10b981] focus:outline-none focus:ring-1 focus:ring-[#10b981]/30"
+            placeholder={placeholder}
+            className="w-full rounded-xl border-2 border-[#2d2d2d] bg-[#1a1a1a] py-4 pl-12 pr-12 text-base text-[#f5f5f5] placeholder-[#5a5a5a] transition-all focus:border-[#ff6b35] focus:outline-none focus:ring-0"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery("")}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#475569] hover:text-slate-300 transition"
+              className="absolute right-4 flex items-center text-[#5a5a5a] hover:text-[#f5f5f5] transition"
               aria-label="Bersihkan"
             >
-              <X className="h-3.5 w-3.5" />
+              <X className="h-5 w-5" />
             </button>
           )}
         </div>
         <button
           type="submit"
-          className="rounded-md bg-[#10b981] px-4 py-2.5 text-sm font-medium text-[#022c22] transition hover:bg-[#34d399] active:scale-95 flex-shrink-0"
+          className="mt-3 w-full rounded-xl bg-[#ff6b35] px-4 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#ff8555] active:scale-[0.98]"
         >
-          Cari
+          {buttonText}
         </button>
       </form>
 
-      {/* Desktop Popular searches */}
-      <div className="hidden lg:flex flex-col">
-        <p className="text-[11px] text-[#475569] mb-2 uppercase tracking-wider">Populer</p>
-        <div className="flex flex-wrap gap-1.5">
-          {POPULAR_SEARCHES.map((name) => {
+      {/* Popular searches */}
+      <div className="flex flex-col">
+        <p className="text-xs text-[#5a5a5a] mb-3 font-medium uppercase tracking-wider">Sering dicari</p>
+        <div className="flex flex-wrap gap-2">
+          {popularSearches.map((name: string) => {
             const isActive = query.toLowerCase() === name.toLowerCase();
             return (
               <button
                 key={name}
                 type="button"
                 onClick={() => handleSuggestionClick(name)}
-                className={`rounded px-2.5 py-1 text-[11px] font-medium transition border ${
+                className={`rounded-lg px-3 py-2 text-xs font-medium transition-all border ${
                   isActive
-                    ? "border-[#065f46] bg-[#022c22] text-[#34d399]"
-                    : "border-[#1e2d3d] bg-[#111827] text-[#64748b] hover:border-[#2a3d52] hover:text-slate-300"
+                    ? "border-[#ff6b35] bg-[#ff6b35]/10 text-[#ff6b35]"
+                    : "border-[#2d2d2d] bg-[#1a1a1a] text-[#8a8a8a] hover:border-[#3d3d3d] hover:text-[#f5f5f5]"
                 }`}
               >
                 {name}

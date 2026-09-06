@@ -46,10 +46,10 @@ export default async function TeamPage({ params }: TeamPageProps) {
     <div className="space-y-6 max-w-6xl mx-auto">
 
       {/* ── Navigation bar ── */}
-      <div className="flex items-center justify-between gap-4 border-b border-[#1e2d3d] pb-5">
+      <div className="flex items-center justify-between gap-4 border-b border-[#2d2d2d] pb-5">
         <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 rounded border border-[#1e2d3d] bg-[#111827] px-3 py-1.5 text-[11px] font-medium text-[#64748b] transition hover:text-slate-300 hover:border-[#2a3d52]"
+          href="/teams"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-[#2d2d2d] bg-[#1a1a1a] px-4 py-2 text-xs font-medium text-[#8a8a8a] transition hover:text-[#f5f5f5] hover:border-[#3d3d3d]"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           Kembali ke Pencarian
@@ -57,55 +57,55 @@ export default async function TeamPage({ params }: TeamPageProps) {
       </div>
 
       {/* ── Breadcrumb label ── */}
-      <p className="text-[11px] font-medium tracking-widest text-[#475569] uppercase">
+      <p className="text-[11px] font-medium tracking-widest text-[#5a5a5a] uppercase">
         Profil Klub
       </p>
 
       {/* ── Hero card ── */}
-      <div className="border border-[#1e2d3d] bg-[#0d1117]">
+      <div className="border border-[#2d2d2d] bg-[#1a1a1a] rounded-2xl overflow-hidden">
 
         {/* Top section: badge + name + info grid */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-0">
 
           {/* Badge column */}
-          <div className="flex-shrink-0 border-b md:border-b-0 md:border-r border-[#1e2d3d] bg-[#080c12] flex items-center justify-center p-6 w-full md:w-48 lg:w-56">
+          <div className="flex-shrink-0 border-b md:border-b-0 md:border-r border-[#2d2d2d] bg-[#0f0f0f] flex items-center justify-center p-8 w-full md:w-56 lg:w-64">
             {team.strBadge ? (
               <img
                 src={team.strBadge}
                 alt={team.strTeam}
-                className="h-36 w-36 object-contain"
+                className="h-40 w-40 object-contain filter drop-shadow-lg"
               />
             ) : (
-              <Shield className="h-24 w-24 text-[#1e2d3d]" />
+              <Shield className="h-28 w-28 text-[#3d3d3d]" />
             )}
           </div>
 
           {/* Name + info grid column */}
           <div className="flex-1 p-6 sm:p-8 w-full">
-            <div className="border-b border-[#1e2d3d] pb-5 mb-6">
-              <h1 className="text-2xl sm:text-3xl font-semibold text-slate-100 leading-snug">
+            <div className="border-b border-[#2d2d2d] pb-5 mb-6">
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#f5f5f5] leading-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
                 {team.strTeam}
               </h1>
               {team.strTeamAlternate && (
-                <p className="mt-1 text-[11px] text-[#475569]">
+                <p className="mt-2 text-xs text-[#5a5a5a]">
                   Alias:{" "}
-                  <span className="text-[#64748b]">{team.strTeamAlternate}</span>
+                  <span className="text-[#8a8a8a]">{team.strTeamAlternate}</span>
                 </p>
               )}
             </div>
 
             {/* Info grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1e2d3d] border border-[#1e2d3d]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {infoItems.map((item, idx) => {
                 const Icon = item.icon;
                 return (
-                  <div key={idx} className="bg-[#0d1117] p-3.5">
-                    <div className="flex items-center gap-1.5 text-[10px] text-[#475569] uppercase tracking-wider mb-1.5">
-                      <Icon className="h-3 w-3" />
+                  <div key={idx} className="bg-[#242424] rounded-xl p-4">
+                    <div className="flex items-center gap-2 text-[11px] text-[#5a5a5a] uppercase tracking-wider mb-2">
+                      <Icon className="h-3.5 w-3.5" />
                       {item.label}
                     </div>
                     <div
-                      className="text-sm font-semibold text-slate-200 truncate"
+                      className="text-sm font-semibold text-[#f5f5f5] truncate"
                       title={String(item.value ?? "")}
                     >
                       {item.value || "-"}
@@ -119,14 +119,14 @@ export default async function TeamPage({ params }: TeamPageProps) {
 
         {/* Club Description */}
         {team.strDescriptionEN && (
-          <div className="border-t border-[#1e2d3d] px-6 sm:px-8 py-6 space-y-3">
-            <div className="flex items-center gap-2 border-b border-[#1e2d3d] pb-4">
-              <Globe className="h-3.5 w-3.5 text-[#34d399]" />
-              <h3 className="text-sm font-medium text-slate-300">Tentang Klub</h3>
+          <div className="border-t border-[#2d2d2d] px-6 sm:px-8 py-6 space-y-3">
+            <div className="flex items-center gap-2 border-b border-[#2d2d2d] pb-4">
+              <Globe className="h-4 w-4 text-[#ff6b35]" />
+              <h3 className="text-sm font-semibold text-[#f5f5f5]">Tentang Klub</h3>
             </div>
             <ExpandableText
               text={team.strDescriptionEN}
-              textClassName="text-sm text-[#64748b] leading-relaxed whitespace-pre-line"
+              textClassName="text-sm text-[#8a8a8a] leading-relaxed whitespace-pre-line"
             />
           </div>
         )}

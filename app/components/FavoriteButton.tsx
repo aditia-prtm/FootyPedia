@@ -45,17 +45,17 @@ export default function FavoriteButton({
       onClick={handleClick}
       title={favorite ? "Hapus dari favorit" : "Tambah ke favorit"}
       aria-label={favorite ? "Hapus dari favorit" : "Tambah ke favorit"}
-      className={`inline-flex items-center justify-center rounded border font-medium transition-all duration-150 active:scale-95 ${
+      className={`inline-flex items-center justify-center rounded-xl border font-semibold transition-all duration-200 active:scale-95 ${
         sizeClasses[size]
       } ${
         favorite
-          ? "bg-[#1a0a10] text-rose-400 border-[#3d1a27] hover:bg-[#280f1a]"
-          : "bg-[#111827] text-[#475569] border-[#1e2d3d] hover:text-slate-300 hover:border-[#2a3d52]"
+          ? "bg-[#ff6b35]/10 text-[#ff6b35] border-[#ff6b35]/30 hover:bg-[#ff6b35]/20"
+          : "bg-[#1a1a1a] text-[#5a5a5a] border-[#2d2d2d] hover:text-[#f5f5f5] hover:border-[#3d3d3d]"
       } ${className}`}
     >
       <Heart
-        className={`${iconSizes[size]} transition-transform duration-150 ${
-          favorite ? "fill-rose-500 text-rose-500" : ""
+        className={`${iconSizes[size]} transition-transform duration-200 ${
+          favorite ? "fill-[#ff6b35] text-[#ff6b35]" : ""
         }`}
       />
       {showText && (

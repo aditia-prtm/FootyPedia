@@ -54,13 +54,13 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
   ];
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <div className="space-y-8 max-w-5xl mx-auto">
 
       {/* ── Navigation bar ── */}
-      <div className="flex items-center justify-between gap-4 border-b border-[#1e2d3d] pb-5">
+      <div className="flex items-center justify-between gap-4 border-b border-[#2d2d2d] pb-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 rounded border border-[#1e2d3d] bg-[#111827] px-3 py-1.5 text-[11px] font-medium text-[#64748b] transition hover:text-slate-300 hover:border-[#2a3d52]"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-[#2d2d2d] bg-[#1a1a1a] px-4 py-2 text-xs font-medium text-[#8a8a8a] transition hover:text-[#f5f5f5] hover:border-[#3d3d3d]"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           Kembali ke Pencarian
@@ -70,34 +70,34 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
       </div>
 
       {/* ── Breadcrumb label ── */}
-      <p className="text-[11px] font-medium tracking-widest text-[#475569] uppercase">
+      <p className="text-[11px] font-medium tracking-widest text-[#5a5a5a] uppercase">
         Profil Pemain
       </p>
 
       {/* ── Hero card ── */}
-      <div className="border border-[#1e2d3d] bg-[#0d1117]">
+      <div className="border border-[#2d2d2d] bg-[#1a1a1a] rounded-2xl overflow-hidden">
 
         {/* Top section: photo + name + status */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-0 md:gap-0">
 
           {/* Photo column */}
-          <div className="flex-shrink-0 border-b md:border-b-0 md:border-r border-[#1e2d3d] bg-[#080c12] flex flex-col items-center justify-center p-6 w-full md:w-56 lg:w-64">
+          <div className="flex-shrink-0 border-b md:border-b-0 md:border-r border-[#2d2d2d] bg-[#0f0f0f] flex flex-col items-center justify-center p-8 w-full md:w-56 lg:w-64">
             {imageUrl ? (
               <img
                 src={imageUrl}
                 alt={player.strPlayer}
-                className="h-48 w-48 sm:h-56 sm:w-56 object-contain"
+                className="h-52 w-52 sm:h-60 sm:w-60 object-contain filter drop-shadow-lg"
               />
             ) : (
-              <div className="flex flex-col items-center justify-center text-[#334155] h-48 w-48">
-                <User className="h-20 w-20 stroke-[1]" />
-                <span className="text-[11px] mt-2">Foto Tidak Tersedia</span>
+              <div className="flex flex-col items-center justify-center text-[#3d3d3d] h-52 w-52">
+                <User className="h-24 w-24 stroke-[1]" />
+                <span className="text-xs mt-3">Foto Tidak Tersedia</span>
               </div>
             )}
 
             {player.strStatus && (
-              <span className="mt-4 inline-flex items-center gap-1.5 rounded border border-[#065f46] bg-[#022c22] px-2.5 py-1 text-[11px] font-medium text-[#34d399]">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-[#ff6b35]/30 bg-[#ff6b35]/10 px-3 py-1.5 text-[11px] font-semibold text-[#ff6b35]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#ff6b35]" />
                 {player.strStatus}
               </span>
             )}
@@ -105,44 +105,44 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
 
           {/* Name + stats column */}
           <div className="flex-1 p-6 sm:p-8 w-full">
-            <div className="border-b border-[#1e2d3d] pb-5 mb-6">
-              <h1 className="text-2xl sm:text-3xl font-semibold text-slate-100 leading-snug">
+            <div className="border-b border-[#2d2d2d] pb-5 mb-6">
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#f5f5f5] leading-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
                 {player.strPlayer}
               </h1>
               {player.strPlayerAlternate && (
-                <p className="mt-1 text-[11px] text-[#475569]">
-                  Alias:{" "}
-                  <span className="text-[#64748b]">{player.strPlayerAlternate}</span>
+                <p className="mt-2 text-xs text-[#5a5a5a]">
+                  Alias: {" "}
+                  <span className="text-[#8a8a8a]">{player.strPlayerAlternate}</span>
                 </p>
               )}
             </div>
 
             {/* Stat grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1e2d3d] border border-[#1e2d3d]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {statItems.map((item, idx) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={idx}
-                    className={`p-3.5 ${
-                      item.highlight ? "bg-[#022c22]" : "bg-[#0d1117]"
+                    className={`rounded-xl p-4 ${
+                      item.highlight ? "bg-[#ff6b35]/10 border border-[#ff6b35]/30" : "bg-[#242424]"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 text-[10px] text-[#475569] uppercase tracking-wider mb-1.5">
-                      <Icon className="h-3 w-3" />
+                    <div className="flex items-center gap-2 text-[11px] text-[#5a5a5a] uppercase tracking-wider mb-2">
+                      <Icon className="h-3.5 w-3.5" />
                       {item.label}
                     </div>
 
                     {item.link ? (
                       <Link
                         href={item.link}
-                        className="inline-flex items-center gap-1 text-sm font-semibold text-[#34d399] hover:underline truncate max-w-full"
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-[#ff6b35] hover:underline truncate max-w-full"
                       >
                         <span className="truncate">{item.value || "-"}</span>
-                        <ArrowRight className="h-3 w-3 flex-shrink-0" />
+                        <ArrowRight className="h-3.5 w-3.5 flex-shrink-0" />
                       </Link>
                     ) : (
-                      <div className="text-sm font-semibold text-slate-200 truncate">
+                      <div className="text-sm font-semibold text-[#f5f5f5] truncate">
                         {item.value || "-"}
                       </div>
                     )}
@@ -155,15 +155,15 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
 
         {/* Biography */}
         {player.strDescriptionEN && (
-          <div className="border-t border-[#1e2d3d] px-6 sm:px-8 py-6 space-y-3">
-            <div className="flex items-center gap-2 border-b border-[#1e2d3d] pb-4">
-              <User className="h-3.5 w-3.5 text-[#34d399]" />
-              <h3 className="text-sm font-medium text-slate-300">Biografi Pemain</h3>
+          <div className="border-t border-[#2d2d2d] px-6 sm:px-8 py-6 space-y-3">
+            <div className="flex items-center gap-2 border-b border-[#2d2d2d] pb-4">
+              <User className="h-4 w-4 text-[#ff6b35]" />
+              <h3 className="text-sm font-semibold text-[#f5f5f5]">Biografi Pemain</h3>
             </div>
             <ExpandableText
               text={player.strDescriptionEN}
               collapsedHeight="max-h-[300px]"
-              textClassName="text-sm text-[#64748b] leading-relaxed whitespace-pre-line"
+              textClassName="text-sm text-[#8a8a8a] leading-relaxed whitespace-pre-line"
             />
           </div>
         )}

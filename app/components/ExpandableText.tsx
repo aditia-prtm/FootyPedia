@@ -40,9 +40,9 @@ export default function ExpandableText({
         <button
           type="button"
           onClick={() => setExpanded(true)}
-          className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-emerald-400 hover:text-emerald-300"
+          className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#ff6b35] hover:text-[#ff8555]"
         >
-          See More
+          Lihat Selengkapnya
           <ChevronDown className="h-3.5 w-3.5" />
         </button>
       )}
@@ -51,9 +51,9 @@ export default function ExpandableText({
         <button
           type="button"
           onClick={() => setExpanded(false)}
-          className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-emerald-400 hover:text-emerald-300"
+          className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#ff6b35] hover:text-[#ff8555]"
         >
-          See Less
+          Lihat Lebih Sedikit
           <ChevronUp className="h-3.5 w-3.5" />
         </button>
       )}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, Search } from "lucide-react";
+import { Heart, Search, Menu, Shield } from "lucide-react";
 import { useFavorites } from "../context/FavoritesContext";
 
 export default function Navbar() {
@@ -10,63 +10,81 @@ export default function Navbar() {
   const { favorites, isLoaded } = useFavorites();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#1e2d3d] bg-[#0a0d13]/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-
-        {/* Brand */}
-        <Link
-          href="/"
-          className="flex items-center gap-3 group"
-        >
-          {/* Logo mark — simple geometric, no gradient */}
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-[#10b981] text-[#022c22] font-bold text-sm flex-shrink-0 group-hover:bg-[#34d399] transition-colors">
-            FP
-          </div>
-          <div>
-            <span className="block text-sm font-semibold text-slate-200 leading-none tracking-tight">
-              FootyPedia
-            </span>
-            <span className="block text-[10px] text-[#475569] leading-none mt-0.5 font-mono">
-              football data
-            </span>
-          </div>
-        </Link>
-
-        {/* Nav */}
-        <nav className="flex items-center gap-1">
+    <header className="sticky top-0 z-50 w-full border-b border-[#2d2d2d] bg-[#0f0f0f]/95 backdrop-blur-sm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          
+          {/* Brand - Left */}
           <Link
             href="/"
-            className={`flex items-center gap-1.5 rounded px-3 py-2 text-xs font-medium transition ${
-              pathname === "/"
-                ? "bg-[#111827] text-slate-200 border border-[#1e2d3d]"
-                : "text-[#64748b] hover:text-slate-300 hover:bg-[#111827]/60"
-            }`}
+            className="flex items-center gap-3 group"
           >
-            <Search className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Cari Pemain</span>
+            <div className="relative">
+              <div className="absolute inset-0 bg-[#ff6b35]/20 blur-lg rounded-full group-hover:bg-[#ff6b35]/30 transition-colors" />
+              <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b35] to-[#cc5429] text-white font-bold text-sm flex-shrink-0 group-hover:scale-105 transition-transform shadow-lg">
+                FP
+              </div>
+            </div>
+            <div className="hidden sm:block">
+              <span className="block text-lg font-bold text-[#f5f5f5] leading-none tracking-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+                FootyPedia
+              </span>
+            </div>
           </Link>
 
-          <Link
-            href="/favorites"
-            className={`relative flex items-center gap-1.5 rounded px-3 py-2 text-xs font-medium transition ${
-              pathname === "/favorites"
-                ? "bg-[#1a1020] text-rose-400 border border-[#3d1a27]"
-                : "text-[#64748b] hover:text-slate-300 hover:bg-[#111827]/60"
-            }`}
-          >
-            <Heart
-              className={`h-3.5 w-3.5 ${
-                favorites.length > 0 ? "fill-rose-500 text-rose-500" : ""
+          {/* Nav - Center (Desktop) */}
+          <nav className="hidden md:flex items-center gap-1">
+            <Link
+              href="/"
+              className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                pathname === "/"
+                  ? "text-[#ff6b35] bg-[#ff6b35]/10"
+                  : "text-[#8a8a8a] hover:text-[#f5f5f5] hover:bg-[#1a1a1a]"
               }`}
-            />
-            <span>Favorit</span>
-            {isLoaded && favorites.length > 0 && (
-              <span className="ml-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-sm bg-rose-600 px-1 text-[10px] font-semibold text-white">
-                {favorites.length}
-              </span>
-            )}
-          </Link>
-        </nav>
+            >
+              <Search className="h-4 w-4" />
+              Pemain
+            </Link>
+
+            <Link
+              href="/teams"
+              className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                pathname === "/teams"
+                  ? "text-[#ff6b35] bg-[#ff6b35]/10"
+                  : "text-[#8a8a8a] hover:text-[#f5f5f5] hover:bg-[#1a1a1a]"
+              }`}
+            >
+              <Shield className="h-4 w-4" />
+              Klub
+            </Link>
+
+            <Link
+              href="/favorites"
+              className={`relative flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                pathname === "/favorites"
+                  ? "text-[#ff6b35] bg-[#ff6b35]/10"
+                  : "text-[#8a8a8a] hover:text-[#f5f5f5] hover:bg-[#1a1a1a]"
+              }`}
+            >
+              <Heart
+                className={`h-4 w-4 ${
+                  favorites.length > 0 ? "fill-[#ff6b35] text-[#ff6b35]" : ""
+                }`}
+              />
+              Favorit
+              {isLoaded && favorites.length > 0 && (
+                <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#ff6b35] px-1.5 text-[10px] font-bold text-white">
+                  {favorites.length}
+                </span>
+              )}
+            </Link>
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button className="md:hidden flex items-center justify-center rounded-lg p-2 text-[#8a8a8a] hover:text-[#f5f5f5] hover:bg-[#1a1a1a] transition-colors">
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
       </div>
     </header>
   );
