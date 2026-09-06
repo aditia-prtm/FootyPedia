@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Shield, MapPin, Trophy, ArrowUpRight } from "lucide-react";
-import { Team } from "@/lib/types";
-import FavoriteButton from "./FavoriteButton";
+import { Team } from "@/types";
+import { FavoriteButton } from "@/features/favorites";
 
-interface TeamCardProps {
+export interface TeamCardProps {
   team: Team;
 }
 
@@ -12,7 +12,6 @@ export default function TeamCard({ team }: TeamCardProps) {
 
   return (
     <div className="group relative flex flex-col justify-between rounded-2xl border border-[#2d2d2d] bg-[#1a1a1a] transition-all duration-300 hover:border-[#ff6b35]/50 hover:bg-[#242424] hover:shadow-xl hover:shadow-[#ff6b35]/5">
-
       {/* Top section */}
       <div className="flex items-start justify-between gap-3 p-5 pb-4">
         <div className="flex-1 min-w-0">

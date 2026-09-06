@@ -1,8 +1,8 @@
 import { SearchX } from "lucide-react";
-import { Player } from "@/lib/types";
+import { Player } from "@/types";
 import PlayerCard from "./PlayerCard";
 
-interface PlayerListProps {
+export interface PlayerListProps {
   players: Player[];
   emptyMessage?: string;
   showTips?: boolean;
@@ -30,7 +30,7 @@ export default function PlayerList({
           <div className="mt-5 border-t border-[#2d2d2d] pt-5 w-full max-w-xs">
             <p className="text-[11px] text-[#5a5a5a] uppercase tracking-wider mb-2">Tips</p>
             <ul className="text-[12px] text-[#5a5a5a] space-y-1 text-left">
-              <li>· Pastikan ejaan sudah benar (contoh: "Messi")</li>
+              <li>· Pastikan ejaan sudah benar (contoh: &ldquo;Messi&rdquo;)</li>
               <li>· Coba nama depan atau nama belakang saja</li>
               <li>· Gunakan alfabet standar (tanpa aksara khusus)</li>
             </ul>

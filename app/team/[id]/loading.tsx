@@ -1,4 +1,4 @@
-import { TeamDetailSkeleton } from "@/app/components/Skeletons";
+import { TeamDetailSkeleton } from "@/components/ui";
 
 export default function TeamLoading() {
   return <TeamDetailSkeleton />;

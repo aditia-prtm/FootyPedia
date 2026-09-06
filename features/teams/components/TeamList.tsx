@@ -1,8 +1,8 @@
 import { ShieldAlert } from "lucide-react";
-import { Team } from "@/lib/types";
+import { Team } from "@/types";
 import TeamCard from "./TeamCard";
 
-interface TeamListProps {
+export interface TeamListProps {
   teams: Team[];
   emptyMessage?: string;
   showTips?: boolean;
@@ -30,8 +30,8 @@ export default function TeamList({
           <div className="mt-5 border-t border-[#2d2d2d] pt-5 w-full max-w-xs">
             <p className="text-[11px] text-[#5a5a5a] uppercase tracking-wider mb-2">Tips</p>
             <ul className="text-[12px] text-[#5a5a5a] space-y-1 text-left">
-              <li>· Pastikan ejaan sudah benar (contoh: "Real Madrid")</li>
-              <li>· Coba nama kota atau nama pendek (contoh: "Arsenal")</li>
+              <li>· Pastikan ejaan sudah benar (contoh: &ldquo;Real Madrid&rdquo;)</li>
+              <li>· Coba nama kota atau nama pendek (contoh: &ldquo;Arsenal&rdquo;)</li>
               <li>· Gunakan alfabet standar (tanpa aksara khusus)</li>
             </ul>
           </div>

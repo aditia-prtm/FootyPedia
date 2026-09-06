@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-interface ExpandableTextProps {
+export interface ExpandableTextProps {
   text: string;
   collapsedHeight?: string;
   textClassName?: string;
@@ -40,7 +40,7 @@ export default function ExpandableText({
         <button
           type="button"
           onClick={() => setExpanded(true)}
-          className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#ff6b35] hover:text-[#ff8555]"
+          className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#ff6b35] hover:text-[#ff8555] cursor-pointer"
         >
           Lihat Selengkapnya
           <ChevronDown className="h-3.5 w-3.5" />
@@ -51,7 +51,7 @@ export default function ExpandableText({
         <button
           type="button"
           onClick={() => setExpanded(false)}
-          className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#ff6b35] hover:text-[#ff8555]"
+          className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#ff6b35] hover:text-[#ff8555] cursor-pointer"
         >
           Lihat Lebih Sedikit
           <ChevronUp className="h-3.5 w-3.5" />

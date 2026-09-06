@@ -1,4 +1,5 @@
 import React from "react";
+import { POPULAR_SEARCHES, SearchType } from "@/features/search/constants";
 
 export function PlayerCardSkeleton() {
   return (
@@ -210,25 +211,6 @@ export function FavoritesPageSkeleton() {
   );
 }
 
-const POPULAR_SEARCH_SKELETONS = {
-  player: [
-    "Cristiano Ronaldo",
-    "Lionel Messi",
-    "Neymar",
-    "Erling Haaland",
-    "Kylian Mbappe",
-    "Jude Bellingham",
-  ],
-  team: [
-    "Real Madrid",
-    "Manchester United",
-    "Barcelona",
-    "Bayern Munich",
-    "Liverpool",
-    "Paris Saint Germain",
-  ],
-} as const;
-
 function PopularSearchesSkeleton({ names }: { names: readonly string[] }) {
   return (
     <div className="flex flex-col">
@@ -250,9 +232,9 @@ function PopularSearchesSkeleton({ names }: { names: readonly string[] }) {
 export function SearchFormSkeleton({
   searchType = "player",
 }: {
-  searchType?: "player" | "team";
+  searchType?: SearchType;
 }) {
-  const names = POPULAR_SEARCH_SKELETONS[searchType];
+  const names = POPULAR_SEARCHES[searchType];
 
   return (
     <div className="w-full space-y-5">
@@ -280,7 +262,7 @@ export function SearchFormSkeleton({
 export function HeroSectionSkeleton({
   variant = "player",
 }: {
-  variant?: "player" | "team";
+  variant?: SearchType;
 }) {
   const isTeam = variant === "team";
 
@@ -334,7 +316,7 @@ export function HeroSectionSkeleton({
 export function SearchPageSkeleton({
   variant = "player",
 }: {
-  variant?: "player" | "team";
+  variant?: SearchType;
 }) {
   const isTeam = variant === "team";
 

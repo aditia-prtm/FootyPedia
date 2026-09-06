@@ -1,4 +1,4 @@
-import { Player, Team } from "./types";
+import { Player, Team } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 

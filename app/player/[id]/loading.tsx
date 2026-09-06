@@ -1,4 +1,4 @@
-import { PlayerDetailSkeleton } from "@/app/components/Skeletons";
+import { PlayerDetailSkeleton } from "@/components/ui";
 
 export default function PlayerLoading() {
   return <PlayerDetailSkeleton />;

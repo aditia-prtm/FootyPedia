@@ -3,30 +3,12 @@
 import React, { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X, Loader2 } from "lucide-react";
+import { POPULAR_SEARCHES, SearchType } from "../constants";
 
-interface SearchFormProps {
+export interface SearchFormProps {
   initialQuery?: string;
-  searchType?: "player" | "team";
+  searchType?: SearchType;
 }
-
-const POPULAR_SEARCHES = {
-  player: [
-    "Cristiano Ronaldo",
-    "Lionel Messi",
-    "Neymar",
-    "Erling Haaland",
-    "Kylian Mbappe",
-    "Jude Bellingham",
-  ],
-  team: [
-    "Real Madrid",
-    "Manchester United",
-    "Barcelona",
-    "Bayern Munich",
-    "Liverpool",
-    "Paris Saint Germain",
-  ],
-};
 
 export default function SearchForm({ initialQuery = "", searchType = "player" }: SearchFormProps) {
   const [query, setQuery] = useState(initialQuery);
@@ -89,30 +71,36 @@ export default function SearchForm({ initialQuery = "", searchType = "player" }:
     });
   };
 
+  const renderPopularSearches = () => (
+    <div className="flex flex-col">
+      <p className="text-xs text-[#5a5a5a] mb-3 font-medium uppercase tracking-wider">Sering dicari</p>
+      <div className="flex flex-wrap gap-2">
+        {popularSearches.map((name: string) => {
+          const isActive = query.toLowerCase() === name.toLowerCase();
+          return (
+            <button
+              key={name}
+              type="button"
+              onClick={() => handleSuggestionClick(name)}
+              className={`rounded-lg px-3 py-2 text-xs font-medium transition-all border cursor-pointer ${
+                isActive
+                  ? "border-[#ff6b35] bg-[#ff6b35]/10 text-[#ff6b35]"
+                  : "border-[#2d2d2d] bg-[#1a1a1a] text-[#8a8a8a] hover:border-[#3d3d3d] hover:text-[#f5f5f5]"
+              }`}
+            >
+              {name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   return (
     <div className="w-full space-y-5">
-      {/* Popular searches */}
+      {/* Popular searches (Mobile) */}
       <div className="flex lg:hidden flex-col">
-        <p className="text-xs text-[#5a5a5a] mb-3 font-medium uppercase tracking-wider">Sering dicari</p>
-        <div className="flex flex-wrap gap-2">
-          {popularSearches.map((name: string) => {
-            const isActive = query.toLowerCase() === name.toLowerCase();
-            return (
-              <button
-                key={name}
-                type="button"
-                onClick={() => handleSuggestionClick(name)}
-                className={`rounded-lg px-3 py-2 text-xs font-medium transition-all border ${
-                  isActive
-                    ? "border-[#ff6b35] bg-[#ff6b35]/10 text-[#ff6b35]"
-                    : "border-[#2d2d2d] bg-[#1a1a1a] text-[#8a8a8a] hover:border-[#3d3d3d] hover:text-[#f5f5f5]"
-                }`}
-              >
-                {name}
-              </button>
-            );
-          })}
-        </div>
+        {renderPopularSearches()}
       </div>
 
       {/* Search input */}
@@ -130,7 +118,7 @@ export default function SearchForm({ initialQuery = "", searchType = "player" }:
             <button
               type="button"
               onClick={() => setQuery("")}
-              className="absolute right-4 flex items-center text-[#5a5a5a] hover:text-[#f5f5f5] transition"
+              className="absolute right-4 flex items-center text-[#5a5a5a] hover:text-[#f5f5f5] transition cursor-pointer"
               aria-label="Bersihkan"
             >
               <X className="h-5 w-5" />
@@ -153,28 +141,9 @@ export default function SearchForm({ initialQuery = "", searchType = "player" }:
         </button>
       </form>
 
-      {/* Popular searches */}
+      {/* Popular searches (Desktop) */}
       <div className="hidden lg:flex flex-col">
-        <p className="text-xs text-[#5a5a5a] mb-3 font-medium uppercase tracking-wider">Sering dicari</p>
-        <div className="flex flex-wrap gap-2">
-          {popularSearches.map((name: string) => {
-            const isActive = query.toLowerCase() === name.toLowerCase();
-            return (
-              <button
-                key={name}
-                type="button"
-                onClick={() => handleSuggestionClick(name)}
-                className={`rounded-lg px-3 py-2 text-xs font-medium transition-all border ${
-                  isActive
-                    ? "border-[#ff6b35] bg-[#ff6b35]/10 text-[#ff6b35]"
-                    : "border-[#2d2d2d] bg-[#1a1a1a] text-[#8a8a8a] hover:border-[#3d3d3d] hover:text-[#f5f5f5]"
-                }`}
-              >
-                {name}
-              </button>
-            );
-          })}
-        </div>
+        {renderPopularSearches()}
       </div>
     </div>
   );

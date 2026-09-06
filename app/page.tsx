@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { searchPlayers } from "@/lib/api";
-import SearchForm from "./components/SearchForm";
-import PlayerList from "./components/PlayerList";
-import { PlayerListSkeleton, HeroSectionSkeleton } from "./components/Skeletons";
 import { RotateCcw } from "lucide-react";
+import { searchPlayers } from "@/lib/api";
+import { SITE_CONFIG } from "@/config/site";
+import { SearchForm } from "@/features/search";
+import { PlayerList } from "@/features/players";
+import { PlayerListSkeleton, HeroSectionSkeleton } from "@/components/ui/Skeletons";
 
 type HomeProps = {
   searchParams: Promise<{ q?: string }>;
@@ -26,20 +27,22 @@ export default async function Home({ searchParams }: HomeProps) {
 
   return (
     <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 lg:gap-10 items-start">
-
       {/* ── LEFT PANEL ── Search & Context */}
       <aside className="w-full lg:col-span-7">
         <div className="lg:sticky lg:top-[76px] space-y-6">
           <Suspense fallback={<HeroSectionSkeleton variant="player" />}>
-            {/* Hero section - more personality */}
+            {/* Hero section */}
             <div className="relative">
               <div className="absolute -top-2 -left-2 w-20 h-20 bg-[#ff6b35]/10 rounded-full blur-2xl" />
               <div className="relative">
-                <h1 className="text-4xl sm:text-5xl font-bold text-[#f5f5f5] leading-tight mt-4" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+                <h1
+                  className="text-4xl sm:text-5xl font-bold text-[#f5f5f5] leading-tight mt-4"
+                  style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                >
                   Temukan<br />
                   <span className="text-[#ff6b35]">Legenda</span> Bola
                 </h1>
-                
+
                 <p className="text-base text-[#8a8a8a] leading-relaxed max-w-md mb-6">
                   Jelajahi ribuan profil pemain dari seluruh dunia. Dari bintang Premier League sampai talenta muda di liga minor.
                 </p>
@@ -47,11 +50,11 @@ export default async function Home({ searchParams }: HomeProps) {
                 <div className="flex items-center gap-4 text-sm text-[#8a8a8a]">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-[#ffd700]" />
-                    <span>250K+ Pemain</span>
+                    <span>{SITE_CONFIG.stats.playersCount}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-[#ff6b35]" />
-                    <span>20K+ Klub</span>
+                    <span>{SITE_CONFIG.stats.teamsCount}</span>
                   </div>
                 </div>
               </div>
@@ -62,14 +65,14 @@ export default async function Home({ searchParams }: HomeProps) {
 
             {/* Attribution */}
             <p className="hidden lg:flex gap-1 text-xs text-[#5a5a5a]">
-              Data powered by{" "}
+              {SITE_CONFIG.dataSource.label}{" "}
               <a
-                href="https://www.thesportsdb.com"
+                href={SITE_CONFIG.dataSource.url}
                 target="_blank"
                 rel="noreferrer"
                 className="text-[#ff6b35] hover:text-[#ff8555] underline underline-offset-2 transition-colors"
               >
-                TheSportsDB
+                {SITE_CONFIG.dataSource.name}
               </a>
             </p>
           </Suspense>
@@ -81,7 +84,10 @@ export default async function Home({ searchParams }: HomeProps) {
         {/* Results header */}
         <div className="flex items-center justify-between gap-3 border-b border-[#2d2d2d] pb-4 mb-6">
           <div className="min-w-0">
-            <h2 className="text-lg font-semibold text-[#f5f5f5] truncate" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+            <h2
+              className="text-lg font-semibold text-[#f5f5f5] truncate"
+              style={{ fontFamily: "Space Grotesk, sans-serif" }}
+            >
               {isFeatured ? "Pilihan Editor" : `"${query}"`}
             </h2>
             <p className="text-xs text-[#8a8a8a] mt-1">

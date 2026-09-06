@@ -1,29 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Player, Team } from "@/lib/types";
-
-interface FavoritesContextType {
-  favorites: Player[];
-  teamFavorites: Team[];
-  isLoaded: boolean;
-  // Player Favorites
-  addFavorite: (player: Player) => void;
-  removeFavorite: (idPlayer: string) => void;
-  toggleFavorite: (player: Player) => void;
-  isFavorite: (idPlayer: string) => boolean;
-  clearFavorites: () => void;
-  // Team Favorites
-  addTeamFavorite: (team: Team) => void;
-  removeTeamFavorite: (idTeam: string) => void;
-  toggleTeamFavorite: (team: Team) => void;
-  isTeamFavorite: (idTeam: string) => boolean;
-  clearTeamFavorites: () => void;
-  totalFavoritesCount: number;
-}
-
-const STORAGE_KEY_PLAYERS = "football_encyclopedia_favorites";
-const STORAGE_KEY_TEAMS = "football_encyclopedia_team_favorites";
+import { Player, Team } from "@/types";
+import { FavoritesContextType } from "../types";
+import { FAVORITES_STORAGE_KEYS } from "../constants";
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
@@ -34,7 +14,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const storedPlayers = localStorage.getItem(STORAGE_KEY_PLAYERS);
+      const storedPlayers = localStorage.getItem(FAVORITES_STORAGE_KEYS.players);
       if (storedPlayers) {
         const parsed = JSON.parse(storedPlayers);
         if (Array.isArray(parsed)) {
@@ -42,7 +22,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      const storedTeams = localStorage.getItem(STORAGE_KEY_TEAMS);
+      const storedTeams = localStorage.getItem(FAVORITES_STORAGE_KEYS.teams);
       if (storedTeams) {
         const parsedTeams = JSON.parse(storedTeams);
         if (Array.isArray(parsedTeams)) {
@@ -60,7 +40,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const savePlayersToStorage = (updated: Player[]) => {
     setFavorites(updated);
     try {
-      localStorage.setItem(STORAGE_KEY_PLAYERS, JSON.stringify(updated));
+      localStorage.setItem(FAVORITES_STORAGE_KEYS.players, JSON.stringify(updated));
     } catch (e) {
       console.error("Gagal menyimpan pemain favorit ke localStorage", e);
     }
@@ -98,7 +78,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const saveTeamsToStorage = (updated: Team[]) => {
     setTeamFavorites(updated);
     try {
-      localStorage.setItem(STORAGE_KEY_TEAMS, JSON.stringify(updated));
+      localStorage.setItem(FAVORITES_STORAGE_KEYS.teams, JSON.stringify(updated));
     } catch (e) {
       console.error("Gagal menyimpan klub favorit ke localStorage", e);
     }

@@ -1,41 +1,19 @@
 import Link from "next/link";
 import { User, Shield, Flag, ArrowUpRight } from "lucide-react";
-import { Player } from "@/lib/types";
-import FavoriteButton from "./FavoriteButton";
+import { Player } from "@/types";
+import { FavoriteButton } from "@/features/favorites";
+import { getPositionBadgeClass } from "../utils";
 
-interface PlayerCardProps {
+export interface PlayerCardProps {
   player: Player;
 }
 
-function getPositionTag(pos?: string) {
-  if (!pos) return null;
-  const lower = pos.toLowerCase();
-
-  let color = "text-[#8a8a8a] border-[#2d2d2d] bg-[#1a1a1a]";
-
-  if (lower.includes("forward") || lower.includes("striker") || lower.includes("winger") || lower.includes("attack")) {
-    color = "text-[#ff6b35] border-[#ff6b35]/30 bg-[#ff6b35]/10";
-  } else if (lower.includes("midfield")) {
-    color = "text-[#ffd700] border-[#ffd700]/30 bg-[#ffd700]/10";
-  } else if (lower.includes("defender") || lower.includes("back")) {
-    color = "text-[#6366f1] border-[#6366f1]/30 bg-[#6366f1]/10";
-  } else if (lower.includes("goalkeeper") || lower.includes("keeper")) {
-    color = "text-[#10b981] border-[#10b981]/30 bg-[#10b981]/10";
-  }
-
-  return (
-    <span className={`inline-block rounded-lg border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide ${color}`}>
-      {pos}
-    </span>
-  );
-}
-
-export default function PlayerCard({ player }: PlayerCardProps) { 
-  const imageUrl =  player.strCutout || player.strThumb || player.strRender;
+export default function PlayerCard({ player }: PlayerCardProps) {
+  const imageUrl = player.strCutout || player.strThumb || player.strRender;
+  const positionClass = getPositionBadgeClass(player.strPosition);
 
   return (
     <div className="group relative flex flex-col justify-between rounded-2xl border border-[#2d2d2d] bg-[#1a1a1a] transition-all duration-300 hover:border-[#ff6b35]/50 hover:bg-[#242424] hover:shadow-xl hover:shadow-[#ff6b35]/5">
-
       {/* Top section */}
       <div className="flex items-start justify-between gap-3 p-5 pb-4">
         <div className="flex-1 min-w-0">
@@ -78,7 +56,13 @@ export default function PlayerCard({ player }: PlayerCardProps) {
       <div className="px-5 py-4 space-y-3 text-sm">
         <div className="flex items-center justify-between gap-2">
           <span className="text-[#5a5a5a] text-xs uppercase tracking-wide">Posisi</span>
-          {getPositionTag(player.strPosition) ?? <span className="text-[#3d3d3d] text-xs">—</span>}
+          {player.strPosition ? (
+            <span className={`inline-block rounded-lg border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide ${positionClass}`}>
+              {player.strPosition}
+            </span>
+          ) : (
+            <span className="text-[#3d3d3d] text-xs">—</span>
+          )}
         </div>
 
         <div className="flex items-center justify-between gap-2">

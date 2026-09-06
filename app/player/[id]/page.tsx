@@ -1,18 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  Shield,
-  Flag,
-  Calendar,
-  MapPin,
-  User,
-  Activity,
-  ArrowRight,
-} from "lucide-react";
+import { ArrowLeft, User } from "lucide-react";
 import { getPlayerById } from "@/lib/api";
-import FavoriteButton from "@/app/components/FavoriteButton";
-import ExpandableText from "@/app/components/ExpandableText";
+import { SITE_CONFIG } from "@/config/site";
+import { FavoriteButton } from "@/features/favorites";
+import { PlayerStatsGrid } from "@/features/players";
+import { ExpandableText } from "@/components/ui";
 
 type PlayerPageProps = {
   params: Promise<{ id: string }>;
@@ -22,10 +15,10 @@ export async function generateMetadata({ params }: PlayerPageProps) {
   const { id } = await params;
   const player = await getPlayerById(id);
   if (!player) {
-    return { title: "Pemain Tidak Ditemukan | FootyPedia" };
+    return { title: `Pemain Tidak Ditemukan | ${SITE_CONFIG.name}` };
   }
   return {
-    title: `${player.strPlayer} - Profil & Statistik | FootyPedia`,
+    title: `${player.strPlayer} - Profil & Statistik | ${SITE_CONFIG.name}`,
     description: `Profil lengkap ${player.strPlayer}, pemain ${player.strTeam || "sepak bola"} dari ${player.strNationality || "dunia"}.`,
   };
 }
@@ -38,24 +31,8 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
 
   const imageUrl = player.strRender || player.strThumb || player.strCutout;
 
-  const statItems = [
-    {
-      label: "Klub Saat Ini",
-      value: player.strTeam,
-      icon: Shield,
-      highlight: true,
-      link: player.idTeam ? `/team/${player.idTeam}` : undefined,
-    },
-    { label: "Posisi",         value: player.strPosition,     icon: Activity },
-    { label: "Negara",         value: player.strNationality,  icon: Flag     },
-    { label: "Nomor Punggung", value: player.strNumber ? `#${player.strNumber}` : "-", icon: User },
-    { label: "Tanggal Lahir",  value: player.dateBorn,        icon: Calendar },
-    { label: "Tempat Lahir",   value: player.strBirthLocation, icon: MapPin  },
-  ];
-
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
-
       {/* ── Navigation bar ── */}
       <div className="flex items-center justify-between gap-4 border-b border-[#2d2d2d] pb-6">
         <Link
@@ -76,10 +53,8 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
 
       {/* ── Hero card ── */}
       <div className="border border-[#2d2d2d] bg-[#1a1a1a] rounded-2xl overflow-hidden">
-
         {/* Top section: photo + name + status */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-0 md:gap-0">
-
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-0">
           {/* Photo column */}
           <div className="flex-shrink-0 border-b md:border-b-0 md:border-r border-[#2d2d2d] bg-[#0f0f0f] flex flex-col items-center justify-center p-8 w-full md:w-56 lg:w-64">
             {imageUrl ? (
@@ -106,50 +81,21 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
           {/* Name + stats column */}
           <div className="flex-1 p-6 sm:p-8 w-full">
             <div className="border-b border-[#2d2d2d] pb-5 mb-6">
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#f5f5f5] leading-tight" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+              <h1
+                className="text-3xl sm:text-4xl font-bold text-[#f5f5f5] leading-tight"
+                style={{ fontFamily: "Space Grotesk, sans-serif" }}
+              >
                 {player.strPlayer}
               </h1>
               {player.strPlayerAlternate && (
                 <p className="mt-2 text-xs text-[#5a5a5a]">
-                  Alias: {" "}
-                  <span className="text-[#8a8a8a]">{player.strPlayerAlternate}</span>
+                  Alias: <span className="text-[#8a8a8a]">{player.strPlayerAlternate}</span>
                 </p>
               )}
             </div>
 
             {/* Stat grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {statItems.map((item, idx) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={idx}
-                    className={`rounded-xl p-4 ${
-                      item.highlight ? "bg-[#ff6b35]/10 border border-[#ff6b35]/30" : "bg-[#242424]"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 text-[11px] text-[#5a5a5a] uppercase tracking-wider mb-2">
-                      <Icon className="h-3.5 w-3.5" />
-                      {item.label}
-                    </div>
-
-                    {item.link ? (
-                      <Link
-                        href={item.link}
-                        className="inline-flex items-center gap-1 text-sm font-semibold text-[#ff6b35] hover:underline truncate max-w-full"
-                      >
-                        <span className="truncate">{item.value || "-"}</span>
-                        <ArrowRight className="h-3.5 w-3.5 flex-shrink-0" />
-                      </Link>
-                    ) : (
-                      <div className="text-sm font-semibold text-[#f5f5f5] truncate">
-                        {item.value || "-"}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+            <PlayerStatsGrid player={player} />
           </div>
         </div>
 

@@ -4,15 +4,11 @@ import { useEffect, useId, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Heart, Search, Menu, Shield, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFavorites } from "../context/FavoritesContext";
-
-const NAV_LINKS = [
-  { href: "/", label: "Pemain", icon: Search },
-  { href: "/teams", label: "Klub", icon: Shield },
-  { href: "/favorites", label: "Favorit", icon: Heart },
-] as const;
+import { NAV_LINKS } from "@/config/navigation";
+import { SITE_CONFIG } from "@/config/site";
+import { useFavorites } from "@/features/favorites";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -63,7 +59,7 @@ export default function Navbar() {
             <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#ff6b35] via-[#ff5722] to-[#e64a19] shadow-md shadow-[#ff6b35]/25 ring-1 ring-white/10 group-hover:scale-105 group-hover:shadow-[#ff6b35]/40 transition-all duration-200 shrink-0">
               <Image
                 src="/logo-icon.svg"
-                alt="FootyPedia Logo"
+                alt={`${SITE_CONFIG.name} Logo`}
                 width={40}
                 height={40}
                 className="w-full h-full object-contain"
@@ -80,7 +76,7 @@ export default function Navbar() {
                     letterSpacing: "-0.02em",
                   }}
                 >
-                  FOOTY
+                  {SITE_CONFIG.brand.firstWord}
                 </span>
                 <span
                   className="rounded-md bg-[#ff6b35] px-1.5 py-0.5 text-xs sm:text-[13px] font-black tracking-wider text-white uppercase shadow-sm shadow-[#ff6b35]/30 group-hover:bg-[#ff7b47] transition-colors whitespace-nowrap select-none"
@@ -89,14 +85,14 @@ export default function Navbar() {
                     fontWeight: 900,
                   }}
                 >
-                  PEDIA
+                  {SITE_CONFIG.brand.secondWord}
                 </span>
               </div>
               <span
                 className="text-[9px] sm:text-[10px] font-bold tracking-[0.2em] text-[#8a8a8a] uppercase mt-0.5 whitespace-nowrap select-none"
                 style={{ fontWeight: 700 }}
               >
-                FOOTBALL HUB
+                {SITE_CONFIG.brand.tagline}
               </span>
             </div>
           </Link>
@@ -123,7 +119,7 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="md:hidden flex items-center justify-center rounded-lg p-2 text-[#8a8a8a] hover:text-[#f5f5f5] hover:bg-[#1a1a1a] transition-colors relative"
+            className="md:hidden flex items-center justify-center rounded-lg p-2 text-[#8a8a8a] hover:text-[#f5f5f5] hover:bg-[#1a1a1a] transition-colors relative cursor-pointer"
             aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
             aria-expanded={menuOpen}
             aria-controls={menuId}

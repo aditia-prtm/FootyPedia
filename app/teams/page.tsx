@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { searchTeams } from "@/lib/api";
-import SearchForm from "../components/SearchForm";
-import TeamCard from "../components/TeamCard";
 import { RotateCcw } from "lucide-react";
-import { HeroSectionSkeleton, TeamListSkeleton } from "../components/Skeletons";
+import { searchTeams } from "@/lib/api";
+import { SITE_CONFIG } from "@/config/site";
+import { SearchForm } from "@/features/search";
+import { TeamCard } from "@/features/teams";
+import { HeroSectionSkeleton } from "@/components/ui/Skeletons";
 
 type TeamsPageProps = {
   searchParams: Promise<{ q?: string }>;
@@ -26,7 +27,6 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
 
   return (
     <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-
       {/* ── LEFT PANEL ── Search & Context */}
       <aside className="w-full lg:col-span-7">
         <div className="lg:sticky lg:top-[76px] space-y-6">
@@ -39,12 +39,15 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#ff6b35] animate-pulse" />
                   <span className="text-[11px] font-medium text-[#ff6b35] uppercase tracking-wider">Database Klub</span>
                 </div>
-                
-                <h1 className="text-4xl sm:text-5xl font-bold text-[#f5f5f5] leading-tight mb-4" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+
+                <h1
+                  className="text-4xl sm:text-5xl font-bold text-[#f5f5f5] leading-tight mb-4"
+                  style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                >
                   Temukan<br />
                   <span className="text-[#ff6b35]">Klub</span> Legendaris
                 </h1>
-                
+
                 <p className="text-base text-[#8a8a8a] leading-relaxed max-w-md mb-6">
                   Jelajahi ribuan profil klub dari seluruh dunia. Dari raksasa Eropa sampai tim lokal dengan sejarah panjang.
                 </p>
@@ -52,11 +55,11 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
                 <div className="flex items-center gap-4 text-sm text-[#8a8a8a]">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-[#ffd700]" />
-                    <span>20K+ Klub</span>
+                    <span>{SITE_CONFIG.stats.teamsCount}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-[#ff6b35]" />
-                    <span>150+ Liga</span>
+                    <span>{SITE_CONFIG.stats.leaguesCount}</span>
                   </div>
                 </div>
               </div>
@@ -67,14 +70,14 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
 
             {/* Attribution */}
             <p className="text-xs text-[#5a5a5a]">
-              Data powered by{" "}
+              {SITE_CONFIG.dataSource.label}{" "}
               <a
-                href="https://www.thesportsdb.com"
+                href={SITE_CONFIG.dataSource.url}
                 target="_blank"
                 rel="noreferrer"
                 className="text-[#ff6b35] hover:text-[#ff8555] underline underline-offset-2 transition-colors"
               >
-                TheSportsDB
+                {SITE_CONFIG.dataSource.name}
               </a>
             </p>
           </Suspense>
@@ -86,7 +89,10 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
         {/* Results header */}
         <div className="flex items-center justify-between gap-3 border-b border-[#2d2d2d] pb-4 mb-6">
           <div className="min-w-0">
-            <h2 className="text-lg font-semibold text-[#f5f5f5] truncate" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+            <h2
+              className="text-lg font-semibold text-[#f5f5f5] truncate"
+              style={{ fontFamily: "Space Grotesk, sans-serif" }}
+            >
               {isFeatured ? "Pilihan Editor" : `"${query}"`}
             </h2>
             <p className="text-xs text-[#8a8a8a] mt-1">
@@ -125,7 +131,7 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
         {teams.length === 0 ? (
           <div className="flex flex-col items-center justify-center border border-dashed border-[#2d2d2d] rounded-2xl px-6 py-16 text-center">
             <p className="text-sm font-medium text-[#8a8a8a] mb-1">
-              Tidak ada klub yang cocok dengan "{query}"
+              Tidak ada klub yang cocok dengan &ldquo;{query}&rdquo;
             </p>
             <p className="text-xs text-[#5a5a5a] max-w-xs">
               Periksa ejaan nama atau gunakan nama yang lebih pendek.

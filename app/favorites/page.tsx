@@ -2,14 +2,17 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Heart, Search, Trash2, ArrowLeft, HeartCrack, User, Shield } from "lucide-react";
+import { Heart, Search, Trash2, ArrowLeft, HeartCrack } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useFavorites } from "../context/FavoritesContext";
-import PlayerList from "../components/PlayerList";
-import TeamList from "../components/TeamList";
-import { FavoritesPageSkeleton } from "../components/Skeletons";
-
-type FavoriteTab = "players" | "teams";
+import {
+  useFavorites,
+  FavoriteTab,
+  FavoriteTabSelector,
+  FAVORITE_TABS,
+} from "@/features/favorites";
+import { PlayerList } from "@/features/players";
+import { TeamList } from "@/features/teams";
+import { FavoritesPageSkeleton } from "@/components/ui/Skeletons";
 
 export default function FavoritesPage() {
   const {
@@ -50,6 +53,7 @@ export default function FavoritesPage() {
 
   const activeCount = activeTab === "players" ? favorites.length : teamFavorites.length;
   const currentItemsCount = activeTab === "players" ? filteredPlayers.length : filteredTeams.length;
+  const currentTabConfig = FAVORITE_TABS.find((tab) => tab.id === activeTab) || FAVORITE_TABS[0];
 
   const handleClearCurrent = () => {
     if (activeTab === "players") {
@@ -62,11 +66,6 @@ export default function FavoritesPage() {
       }
     }
   };
-
-  const tabs: { id: FavoriteTab; label: string; icon: typeof User; count: number }[] = [
-    { id: "players", label: "Pemain", icon: User, count: favorites.length },
-    { id: "teams", label: "Klub", icon: Shield, count: teamFavorites.length },
-  ];
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
@@ -106,7 +105,7 @@ export default function FavoritesPage() {
               type="text"
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
-              placeholder={`Filter ${activeTab === "players" ? "pemain" : "klub"}...`}
+              placeholder={`Filter ${currentTabConfig.itemTypeLabel}...`}
               className="w-full sm:w-64 rounded-xl border border-[#2d2d2d] bg-[#1a1a1a] py-2.5 pl-10 pr-4 text-sm text-[#f5f5f5] placeholder-[#5a5a5a] focus:border-[#ff6b35] focus:outline-none focus:ring-0 transition-colors"
             />
           </div>
@@ -114,10 +113,10 @@ export default function FavoritesPage() {
           {activeCount > 0 && (
             <button
               onClick={handleClearCurrent}
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#2d2d2d] bg-[#1a1a1a] px-4 py-2.5 text-xs font-semibold text-[#8a8a8a] hover:border-[#ff6b35]/30 hover:text-[#ff6b35] hover:bg-[#ff6b35]/5 transition active:scale-95"
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#2d2d2d] bg-[#1a1a1a] px-4 py-2.5 text-xs font-semibold text-[#8a8a8a] hover:border-[#ff6b35]/30 hover:text-[#ff6b35] hover:bg-[#ff6b35]/5 transition active:scale-95 cursor-pointer"
             >
               <Trash2 className="h-4 w-4" />
-              Hapus semua {activeTab === "players" ? "pemain" : "klub"}
+              Hapus semua {currentTabConfig.itemTypeLabel}
             </button>
           )}
         </div>
@@ -125,46 +124,15 @@ export default function FavoritesPage() {
 
       {/* Pill Segmented Control */}
       <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="inline-flex p-1 rounded-2xl bg-[#141414] border border-[#2d2d2d] shadow-inner relative">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isSelected = activeTab === tab.id;
-
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => {
-                  setActiveTab(tab.id);
-                  setFilterQuery("");
-                }}
-                className={`relative z-10 flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-xl transition-colors duration-200 outline-none cursor-pointer ${
-                  isSelected ? "text-white" : "text-[#8a8a8a] hover:text-[#f5f5f5]"
-                }`}
-              >
-                {isSelected && (
-                  <motion.div
-                    layoutId="activeSegmentedPill"
-                    transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#ff6b35] to-[#f4511e] shadow-md shadow-[#ff6b35]/20"
-                    style={{ zIndex: -1 }}
-                  />
-                )}
-                <Icon className={`h-4 w-4 ${isSelected ? "text-white" : "text-[#8a8a8a]"}`} />
-                <span>{tab.label}</span>
-                <span
-                  className={`inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs font-bold transition-colors ${
-                    isSelected
-                      ? "bg-white/20 text-white"
-                      : "bg-[#242424] text-[#8a8a8a]"
-                  }`}
-                >
-                  {tab.count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        <FavoriteTabSelector
+          activeTab={activeTab}
+          onTabChange={(tab) => {
+            setActiveTab(tab);
+            setFilterQuery("");
+          }}
+          playerCount={favorites.length}
+          teamCount={teamFavorites.length}
+        />
 
         {filterQuery && (
           <div className="text-xs text-[#8a8a8a] flex items-center gap-2">
@@ -173,7 +141,7 @@ export default function FavoritesPage() {
             </span>
             <button
               onClick={() => setFilterQuery("")}
-              className="text-[#ff6b35] hover:underline"
+              className="text-[#ff6b35] hover:underline cursor-pointer"
             >
               Reset
             </button>
@@ -195,17 +163,17 @@ export default function FavoritesPage() {
               <div className="flex flex-col items-center justify-center border border-dashed border-[#2d2d2d] rounded-2xl px-6 py-20 text-center max-w-xl mx-auto">
                 <HeartCrack className="h-12 w-12 text-[#3d3d3d] mb-4 stroke-[1.5]" />
                 <h2 className="text-lg font-semibold text-[#8a8a8a] mb-2">
-                  Belum ada pemain favorit
+                  {currentTabConfig.emptyHeading}
                 </h2>
                 <div className="items-center text-sm text-[#5a5a5a] gap-2 mb-7 leading-relaxed">
-                  Klik ikon hati pada kartu pemain untuk menyimpannya di sini.
+                  {currentTabConfig.emptyDescription}
                 </div>
                 <Link
-                  href="/"
+                  href={currentTabConfig.exploreHref}
                   className="inline-flex items-center gap-1.5 rounded-xl border border-[#ff6b35]/30 bg-[#ff6b35]/10 px-4 py-2.5 text-sm font-semibold text-[#ff6b35] transition hover:bg-[#ff6b35]/20 active:scale-95"
                 >
                   <Search className="h-4 w-4" />
-                  Jelajahi pemain
+                  {currentTabConfig.exploreLabel}
                 </Link>
               </div>
             ) : filteredPlayers.length === 0 ? (
@@ -216,7 +184,7 @@ export default function FavoritesPage() {
                 </p>
                 <button
                   onClick={() => setFilterQuery("")}
-                  className="mt-2 text-xs text-[#ff6b35] hover:underline"
+                  className="mt-2 text-xs text-[#ff6b35] hover:underline cursor-pointer"
                 >
                   Hapus filter
                 </button>
@@ -241,17 +209,17 @@ export default function FavoritesPage() {
               <div className="flex flex-col items-center justify-center border border-dashed border-[#2d2d2d] rounded-2xl px-6 py-20 text-center max-w-xl mx-auto">
                 <HeartCrack className="h-12 w-12 text-[#3d3d3d] mb-4 stroke-[1.5]" />
                 <h2 className="text-lg font-semibold text-[#8a8a8a] mb-2">
-                  Belum ada klub favorit
+                  {currentTabConfig.emptyHeading}
                 </h2>
                 <div className="items-center text-sm text-[#5a5a5a] gap-2 mb-7 leading-relaxed">
-                  Klik ikon hati pada kartu klub untuk menyimpannya di sini.
+                  {currentTabConfig.emptyDescription}
                 </div>
                 <Link
-                  href="/teams"
+                  href={currentTabConfig.exploreHref}
                   className="inline-flex items-center gap-1.5 rounded-xl border border-[#ff6b35]/30 bg-[#ff6b35]/10 px-4 py-2.5 text-sm font-semibold text-[#ff6b35] transition hover:bg-[#ff6b35]/20 active:scale-95"
                 >
                   <Search className="h-4 w-4" />
-                  Jelajahi klub
+                  {currentTabConfig.exploreLabel}
                 </Link>
               </div>
             ) : filteredTeams.length === 0 ? (
@@ -262,7 +230,7 @@ export default function FavoritesPage() {
                 </p>
                 <button
                   onClick={() => setFilterQuery("")}
-                  className="mt-2 text-xs text-[#ff6b35] hover:underline"
+                  className="mt-2 text-xs text-[#ff6b35] hover:underline cursor-pointer"
                 >
                   Hapus filter
                 </button>
