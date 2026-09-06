@@ -31,7 +31,7 @@ function getPositionTag(pos?: string) {
 }
 
 export default function PlayerCard({ player }: PlayerCardProps) { 
-  const imageUrl =  player.strFanart1 || player.strCutout || player.strThumb || player.strRender;
+  const imageUrl =  player.strCutout || player.strThumb || player.strRender;
 
   return (
     <div className="group relative flex flex-col justify-between border border-[#1e2d3d] bg-[#0d1117] transition-colors duration-200 hover:border-[#2a3d52] hover:bg-[#111827]">

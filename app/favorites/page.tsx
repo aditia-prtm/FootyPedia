@@ -91,10 +91,8 @@ export default function FavoritesPage() {
           <h2 className="text-base font-semibold text-slate-300 mb-2">
             Belum ada pemain favorit
           </h2>
-          <div className="flex items-center text-sm text-[#475569] gap-2 mb-7 leading-relaxed">
-            <p>Klik ikon</p>
-            <Heart className="h-4 w-4" />
-            <p> pada kartu pemain untuk menyimpannya di sini.</p>
+          <div className="items-center text-sm text-[#475569] gap-2 mb-7 leading-relaxed">
+            Klik ikon hati pada kartu pemain untuk menyimpannya di sini.
           </div>
           <Link
             href="/"

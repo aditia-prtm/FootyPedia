@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X } from "lucide-react";
 
@@ -21,6 +21,12 @@ export default function SearchForm({ initialQuery = "" }: SearchFormProps) {
   const [query, setQuery] = useState(initialQuery);
   const router = useRouter();
 
+  // Keep the input & active popular-search highlight in sync with the URL,
+  // so they reset when the Reset button (or any navigation) clears ?q=.
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = query.trim();
@@ -38,6 +44,30 @@ export default function SearchForm({ initialQuery = "" }: SearchFormProps) {
 
   return (
     <div className="w-full space-y-4">
+      {/* Mobile Popular searches */}
+      <div className="lg:hidden flex flex-col">
+        <p className="text-[11px] text-[#475569] mb-2 uppercase tracking-wider">Populer</p>
+        <div className="flex flex-wrap gap-1.5">
+          {POPULAR_SEARCHES.map((name) => {
+            const isActive = query.toLowerCase() === name.toLowerCase();
+            return (
+              <button
+                key={name}
+                type="button"
+                onClick={() => handleSuggestionClick(name)}
+                className={`rounded px-2.5 py-1 text-[11px] font-medium transition border ${
+                  isActive
+                    ? "border-[#065f46] bg-[#022c22] text-[#34d399]"
+                    : "border-[#1e2d3d] bg-[#111827] text-[#64748b] hover:border-[#2a3d52] hover:text-slate-300"
+                }`}
+              >
+                {name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Search input */}
       <form onSubmit={handleSubmit} className="flex items-center gap-2">
         <div className="relative flex-1">
@@ -68,8 +98,8 @@ export default function SearchForm({ initialQuery = "" }: SearchFormProps) {
         </button>
       </form>
 
-      {/* Popular searches */}
-      <div>
+      {/* Desktop Popular searches */}
+      <div className="hidden lg:flex flex-col">
         <p className="text-[11px] text-[#475569] mb-2 uppercase tracking-wider">Populer</p>
         <div className="flex flex-wrap gap-1.5">
           {POPULAR_SEARCHES.map((name) => {

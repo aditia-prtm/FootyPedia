@@ -48,14 +48,14 @@ export default async function Home({ searchParams }: HomeProps) {
           <SearchForm initialQuery={query} />
 
           {/* Stats bar */}
-          <div className="mt-8 grid grid-cols-3 gap-px bg-[#1e2d3d] border border-[#1e2d3d] rounded-lg overflow-hidden">
+          <div className="mt-8 hidden lg:grid grid-cols-3 gap-px bg-[#1e2d3d] border border-[#1e2d3d] rounded-lg overflow-hidden">
             <div className="bg-[#0a0d13] px-4 py-3">
-              <span className="block text-xl font-semibold text-slate-100 tabular-nums">700K+</span>
-              <span className="block text-[11px] text-[#64748b] mt-0.5">Pertandingan</span>
+              <span className="block text-xl font-semibold text-slate-100 tabular-nums">250K+</span>
+              <span className="block text-[11px] text-[#64748b] mt-0.5">Pemain + Pelatih</span>
             </div>
             <div className="bg-[#0a0d13] px-4 py-3">
-              <span className="block text-xl font-semibold text-slate-100 tabular-nums">500+</span>
-              <span className="block text-[11px] text-[#64748b] mt-0.5">Liga & Kompetisi</span>
+              <span className="block text-xl font-semibold text-slate-100 tabular-nums">20K+</span>
+              <span className="block text-[11px] text-[#64748b] mt-0.5">Klub</span>
             </div>
             <div className="bg-[#0a0d13] px-4 py-3">
               <span className="block text-xl font-semibold text-slate-100 tabular-nums">Real-time</span>
@@ -64,8 +64,8 @@ export default async function Home({ searchParams }: HomeProps) {
           </div>
 
           {/* Attribution */}
-          <p className="mt-4 text-[11px] text-[#334155]">
-            Sumber data:{" "}
+          <p className="hidden lg:flex mt-4 gap-1 text-[11px] text-[#334155]">
+            Sumber data:
             <a
               href="https://www.thesportsdb.com"
               target="_blank"
@@ -86,7 +86,7 @@ export default async function Home({ searchParams }: HomeProps) {
             <h2 className="text-sm font-medium text-slate-300 truncate">
               {isFeatured
                 ? "Pemain Terbaik Sepanjang Masa"
-                : `"${query}" — ${players.length} hasil`}
+                : `"${query}" —  hasil`}
             </h2>
             <p className="text-[11px] text-[#475569] mt-0.5">
               {isFeatured ? "Contoh pencarian" : "Hasil pencarian"}

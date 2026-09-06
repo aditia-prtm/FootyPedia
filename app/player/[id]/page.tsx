@@ -36,7 +36,7 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
 
   if (!player) notFound();
 
-  const imageUrl = player.strRender || player.strCutout || player.strThumb;
+  const imageUrl = player.strRender || player.strThumb || player.strCutout;
 
   const statItems = [
     {
