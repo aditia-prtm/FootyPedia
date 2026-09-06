@@ -82,7 +82,7 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
       </aside>
 
       {/* ── RIGHT PANEL ── Results */}
-      <section className="w-full lg:col-span-5 mt-8 lg:mt-0">
+      <section id="search-results" className="w-full lg:col-span-5 mt-8 lg:mt-0 scroll-mt-20">
         {/* Results header */}
         <div className="flex items-center justify-between gap-3 border-b border-[#2d2d2d] pb-4 mb-6">
           <div className="min-w-0">

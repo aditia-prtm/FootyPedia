@@ -77,7 +77,7 @@ export default async function Home({ searchParams }: HomeProps) {
       </aside>
 
       {/* ── RIGHT PANEL ── Results */}
-      <section className="w-full lg:col-span-5">
+      <section id="search-results" className="w-full lg:col-span-5 scroll-mt-20">
         {/* Results header */}
         <div className="flex items-center justify-between gap-3 border-b border-[#2d2d2d] pb-4 mb-6">
           <div className="min-w-0">

@@ -37,6 +37,22 @@ export default function SearchForm({ initialQuery = "", searchType = "player" }:
   const buttonText = searchType === "team" ? "Cari Klub" : "Cari Pemain";
   const popularSearches = POPULAR_SEARCHES[searchType];
 
+  const scrollToResults = () => {
+    if (typeof window === "undefined") return;
+    if (window.innerWidth >= 1024) return;
+
+    const performScroll = () => {
+      const resultsEl = document.getElementById("search-results");
+      if (resultsEl) {
+        resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+
+    performScroll();
+    setTimeout(performScroll, 100);
+    setTimeout(performScroll, 300);
+  };
+
   // Keep the input & active popular-search highlight in sync with the URL,
   // so they reset when the Reset button (or any navigation) clears ?q=.
   useEffect(() => {
@@ -51,11 +67,13 @@ export default function SearchForm({ initialQuery = "", searchType = "player" }:
     } else {
       router.push(basePath);
     }
+    scrollToResults();
   };
 
   const handleSuggestionClick = (name: string) => {
     setQuery(name);
     router.push(`${basePath}?q=${encodeURIComponent(name)}`);
+    scrollToResults();
   };
 
   return (
