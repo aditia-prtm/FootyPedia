@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Heart, Search, Menu, Shield, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -55,18 +56,13 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3 group" onClick={() => setMenuOpen(false)}>
-            <div className="relative">
-              <div className="absolute inset-0 bg-[#ff6b35]/20 blur-lg rounded-full group-hover:bg-[#ff6b35]/30 transition-colors" />
-              <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b35] to-[#cc5429] text-white font-bold text-sm flex-shrink-0 group-hover:scale-105 transition-transform shadow-lg">
-                FP
-              </div>
-            </div>
-            <span
-              className="text-lg font-bold text-[#f5f5f5] leading-none tracking-tight"
-              style={{ fontFamily: "Space Grotesk, sans-serif" }}
-            >
-              FootyPedia
-            </span>
+            <Image
+              src="/wordmark.svg"
+              alt="FootyPedia Wordmark"
+              width={120}
+              height={40}
+              className="w-40 h-10 object-contain"
+            />
           </Link>
 
           <nav className="hidden md:flex items-center gap-1" aria-label="Utama">

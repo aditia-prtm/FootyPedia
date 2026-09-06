@@ -27,12 +27,14 @@ export default function RootLayout({
                 
                 {/* Brand Section */}
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b35] to-[#cc5429] text-white font-bold text-xs">
-                      FP
-                    </div>
-                    <span className="text-base font-bold text-[#f5f5f5]" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-                      FootyPedia
+                  <div className="flex items-center"> 
+                    <span className="uppercase text-base font-bold text-[#f5f5f5]" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+                      Footy
+                      <span 
+                        className="text-[#ff6b35]"
+                      >
+                        Pedia
+                      </span>
                     </span>
                   </div>
                   <p className="text-xs text-[#5a5a5a] leading-relaxed max-w-xs">
@@ -78,7 +80,7 @@ export default function RootLayout({
               {/* Bottom Bar */}
               <div className="mt-10 pt-6 border-t border-[#1a1a1a] flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-xs text-[#3d3d3d]">
-                  © {new Date().getFullYear()} FootyPedia. Dibuat dengan ❤️ untuk fans sepak bola.
+                  © {new Date().getFullYear()} FootyPedia.
                 </p>
                 <div className="flex items-center gap-4 text-xs text-[#3d3d3d]">
                   <span className="flex items-center gap-1.5">
