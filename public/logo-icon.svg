@@ -1,0 +1,15 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" rx="12" fill="url(#brand-gradient)"/>
+  <circle cx="24" cy="24" r="14" fill="#ffffff"/>
+  <polygon points="24,15 27.8,18 26.4,22.8 21.6,22.8 20.2,18" fill="#1a1a1a"/>
+  <polygon points="14.8,20.2 18,17.5 18,13.8 14.8,12.7 13.2,15.4" fill="#1a1a1a" opacity="0.85"/>
+  <polygon points="33.2,20.2 30,17.5 30,13.8 33.2,12.7 34.8,15.4" fill="#1a1a1a" opacity="0.85"/>
+  <polygon points="15.3,29.5 18.6,22.4 15.9,20.2 12.6,22.4 12.6,27.3" fill="#1a1a1a" opacity="0.75"/>
+  <polygon points="32.7,29.5 29.4,22.4 32.1,20.2 35.4,22.4 35.4,27.3" fill="#1a1a1a" opacity="0.75"/>
+  <defs>
+    <linearGradient id="brand-gradient" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF6B35"/>
+      <stop offset="1" stop-color="#E85018"/>
+    </linearGradient>
+  </defs>
+</svg>

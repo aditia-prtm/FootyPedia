@@ -55,14 +55,50 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-[#2d2d2d] bg-[#0f0f0f]/95 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-3 group" onClick={() => setMenuOpen(false)}>
-            <Image
-              src="/wordmark.svg"
-              alt="FootyPedia Wordmark"
-              width={120}
-              height={40}
-              className="w-40 h-10 object-contain"
-            />
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 group transition-transform active:scale-95 shrink-0"
+            onClick={() => setMenuOpen(false)}
+          >
+            <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#ff6b35] via-[#ff5722] to-[#e64a19] shadow-md shadow-[#ff6b35]/25 ring-1 ring-white/10 group-hover:scale-105 group-hover:shadow-[#ff6b35]/40 transition-all duration-200 shrink-0">
+              <Image
+                src="/logo-icon.svg"
+                alt="FootyPedia Logo"
+                width={40}
+                height={40}
+                className="w-full h-full object-contain"
+                priority
+              />
+            </div>
+            <div className="flex flex-col shrink-0">
+              <div className="flex items-center gap-1 leading-none">
+                <span
+                  className="text-sm sm:text-base font-black tracking-tight text-white group-hover:text-white transition-colors uppercase whitespace-nowrap select-none"
+                  style={{
+                    fontFamily: "'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontWeight: 800,
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  FOOTY
+                </span>
+                <span
+                  className="rounded-md bg-[#ff6b35] px-1.5 py-0.5 text-xs sm:text-[13px] font-black tracking-wider text-white uppercase shadow-sm shadow-[#ff6b35]/30 group-hover:bg-[#ff7b47] transition-colors whitespace-nowrap select-none"
+                  style={{
+                    fontFamily: "'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontWeight: 900,
+                  }}
+                >
+                  PEDIA
+                </span>
+              </div>
+              <span
+                className="text-[9px] sm:text-[10px] font-bold tracking-[0.2em] text-[#8a8a8a] uppercase mt-0.5 whitespace-nowrap select-none"
+                style={{ fontWeight: 700 }}
+              >
+                FOOTBALL HUB
+              </span>
+            </div>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1" aria-label="Utama">
