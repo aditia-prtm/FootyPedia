@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Shield, MapPin, Trophy, ArrowUpRight } from "lucide-react";
 import { Team } from "@/lib/types";
+import FavoriteButton from "./FavoriteButton";
 
 interface TeamCardProps {
   team: Team;
@@ -28,6 +29,7 @@ export default function TeamCard({ team }: TeamCardProps) {
             <span className="font-mono text-xs text-[#5a5a5a] mt-0.5">{team.strTeamShort}</span>
           )}
         </div>
+        <FavoriteButton team={team} size="sm" />
       </div>
 
       {/* Team badge */}

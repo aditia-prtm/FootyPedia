@@ -2,11 +2,12 @@
 
 import React from "react";
 import { Heart } from "lucide-react";
-import { Player } from "@/lib/types";
+import { Player, Team } from "@/lib/types";
 import { useFavorites } from "../context/FavoritesContext";
 
 interface FavoriteButtonProps {
-  player: Player;
+  player?: Player;
+  team?: Team;
   size?: "sm" | "md" | "lg";
   showText?: boolean;
   className?: string;
@@ -14,17 +15,37 @@ interface FavoriteButtonProps {
 
 export default function FavoriteButton({
   player,
+  team,
   size = "md",
   showText = false,
   className = "",
 }: FavoriteButtonProps) {
-  const { isFavorite, toggleFavorite, isLoaded } = useFavorites();
-  const favorite = isLoaded && isFavorite(player.idPlayer);
+  const {
+    isFavorite,
+    toggleFavorite,
+    isTeamFavorite,
+    toggleTeamFavorite,
+    isLoaded,
+  } = useFavorites();
+
+  const isTeam = Boolean(team);
+  const favorite =
+    isLoaded &&
+    (isTeam && team
+      ? isTeamFavorite(team.idTeam)
+      : player
+      ? isFavorite(player.idPlayer)
+      : false);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleFavorite(player);
+
+    if (isTeam && team) {
+      toggleTeamFavorite(team);
+    } else if (player) {
+      toggleFavorite(player);
+    }
   };
 
   const sizeClasses = {
@@ -39,12 +60,14 @@ export default function FavoriteButton({
     lg: "h-4 w-4",
   };
 
+  const itemLabel = isTeam ? "klub" : "pemain";
+
   return (
     <button
       type="button"
       onClick={handleClick}
-      title={favorite ? "Hapus dari favorit" : "Tambah ke favorit"}
-      aria-label={favorite ? "Hapus dari favorit" : "Tambah ke favorit"}
+      title={favorite ? `Hapus ${itemLabel} dari favorit` : `Tambah ${itemLabel} ke favorit`}
+      aria-label={favorite ? `Hapus ${itemLabel} dari favorit` : `Tambah ${itemLabel} ke favorit`}
       className={`inline-flex items-center justify-center rounded-xl border font-semibold transition-all duration-200 active:scale-95 ${
         sizeClasses[size]
       } ${

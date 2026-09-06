@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { getTeamById } from "@/lib/api";
 import ExpandableText from "@/app/components/ExpandableText";
+import FavoriteButton from "@/app/components/FavoriteButton";
 
 type TeamPageProps = {
   params: Promise<{ id: string }>;
@@ -54,6 +55,8 @@ export default async function TeamPage({ params }: TeamPageProps) {
           <ArrowLeft className="h-3.5 w-3.5" />
           Kembali ke Pencarian
         </Link>
+
+        <FavoriteButton team={team} size="lg" showText />
       </div>
 
       {/* ── Breadcrumb label ── */}

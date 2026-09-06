@@ -4,6 +4,7 @@ import { useEffect, useId, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Heart, Search, Menu, Shield, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useFavorites } from "../context/FavoritesContext";
 
 const NAV_LINKS = [
@@ -14,7 +15,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { favorites, isLoaded } = useFavorites();
+  const { totalFavoritesCount, isLoaded } = useFavorites();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
 
@@ -41,7 +42,7 @@ export default function Navbar() {
   const linkClass = (href: string, isMobile = false) => {
     const active = pathname === href;
     return [
-      "flex items-center gap-2 rounded-lg font-medium transition-all",
+      "flex items-center gap-2 rounded-lg font-medium transition-all duration-200",
       isMobile ? "px-4 py-3 text-base" : "px-4 py-2 text-sm",
       active
         ? "text-[#ff6b35] bg-[#ff6b35]/10"
@@ -73,15 +74,15 @@ export default function Navbar() {
               <Link key={href} href={href} className={linkClass(href)}>
                 <Icon
                   className={`h-4 w-4 ${
-                    href === "/favorites" && favorites.length > 0
+                    href === "/favorites" && totalFavoritesCount > 0
                       ? "fill-[#ff6b35] text-[#ff6b35]"
                       : ""
                   }`}
                 />
                 {label}
-                {href === "/favorites" && isLoaded && favorites.length > 0 && (
-                  <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#ff6b35] px-1.5 text-[10px] font-bold text-white">
-                    {favorites.length}
+                {href === "/favorites" && isLoaded && totalFavoritesCount > 0 && (
+                  <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#ff6b35] px-1.5 text-[10px] font-bold text-white shadow-sm">
+                    {totalFavoritesCount}
                   </span>
                 )}
               </Link>
@@ -90,57 +91,106 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="md:hidden flex items-center justify-center rounded-lg p-2 text-[#8a8a8a] hover:text-[#f5f5f5] hover:bg-[#1a1a1a] transition-colors"
+            className="md:hidden flex items-center justify-center rounded-lg p-2 text-[#8a8a8a] hover:text-[#f5f5f5] hover:bg-[#1a1a1a] transition-colors relative"
             aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
             aria-expanded={menuOpen}
             aria-controls={menuId}
             onClick={() => setMenuOpen((open) => !open)}
           >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <AnimatePresence mode="wait" initial={false}>
+              {menuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <X className="h-5 w-5" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <Menu className="h-5 w-5" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {!menuOpen && isLoaded && totalFavoritesCount > 0 && (
+              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#ff6b35]" />
+            )}
           </button>
         </div>
       </div>
 
-      {menuOpen && (
-        <div className="md:hidden">
-          <button
-            type="button"
-            className="fixed inset-0 top-16 z-40 bg-black/50"
-            aria-label="Tutup menu"
-            onClick={() => setMenuOpen(false)}
-          />
-          <nav
-            id={menuId}
-            aria-label="Mobile"
-            className="relative z-50 border-t border-[#2d2d2d] bg-[#0f0f0f] px-4 py-3 sm:px-6"
-          >
-            <div className="flex flex-col gap-1">
-              {NAV_LINKS.map(({ href, label, icon: Icon }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className={linkClass(href, true)}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <Icon
-                    className={`h-5 w-5 ${
-                      href === "/favorites" && favorites.length > 0
-                        ? "fill-[#ff6b35] text-[#ff6b35]"
-                        : ""
-                    }`}
-                  />
-                  {label}
-                  {href === "/favorites" && isLoaded && favorites.length > 0 && (
-                    <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#ff6b35] px-1.5 text-[10px] font-bold text-white">
-                      {favorites.length}
-                    </span>
-                  )}
-                </Link>
-              ))}
-            </div>
-          </nav>
-        </div>
-      )}
+      <AnimatePresence>
+        {menuOpen && (
+          <div className="md:hidden">
+            {/* Backdrop overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 top-16 z-40 bg-black/60 backdrop-blur-xs"
+              aria-label="Tutup menu"
+              onClick={() => setMenuOpen(false)}
+            />
+
+            {/* Menu drawer */}
+            <motion.nav
+              id={menuId}
+              aria-label="Mobile"
+              initial={{ opacity: 0, y: -12, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: "auto" }}
+              exit={{ opacity: 0, y: -12, height: 0 }}
+              transition={{
+                duration: 0.25,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="relative z-50 overflow-hidden border-t border-[#2d2d2d] bg-[#0f0f0f]/98 px-4 py-4 sm:px-6 shadow-2xl"
+            >
+              <div className="flex flex-col gap-1.5">
+                {NAV_LINKS.map(({ href, label, icon: Icon }, index) => (
+                  <motion.div
+                    key={href}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: 0.05 + index * 0.04,
+                      duration: 0.2,
+                    }}
+                  >
+                    <Link
+                      href={href}
+                      className={linkClass(href, true)}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <Icon
+                        className={`h-5 w-5 ${
+                          href === "/favorites" && totalFavoritesCount > 0
+                            ? "fill-[#ff6b35] text-[#ff6b35]"
+                            : ""
+                        }`}
+                      />
+                      <span>{label}</span>
+                      {href === "/favorites" && isLoaded && totalFavoritesCount > 0 && (
+                        <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#ff6b35] px-1.5 text-[10px] font-bold text-white shadow-sm">
+                          {totalFavoritesCount}
+                        </span>
+                      )}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.nav>
+          </div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
