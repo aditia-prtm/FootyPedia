@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Search, X } from "lucide-react";
+import { Search, X, Loader2 } from "lucide-react";
 
 interface SearchFormProps {
   initialQuery?: string;
@@ -30,7 +30,9 @@ const POPULAR_SEARCHES = {
 
 export default function SearchForm({ initialQuery = "", searchType = "player" }: SearchFormProps) {
   const [query, setQuery] = useState(initialQuery);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const isFirstRender = useRef(true);
 
   const basePath = searchType === "team" ? "/teams" : "/";
   const placeholder = searchType === "team" ? "Cari klub..." : "Cari pemain...";
@@ -48,32 +50,43 @@ export default function SearchForm({ initialQuery = "", searchType = "player" }:
       }
     };
 
-    performScroll();
-    setTimeout(performScroll, 100);
+    requestAnimationFrame(performScroll);
+    setTimeout(performScroll, 50);
+    setTimeout(performScroll, 150);
     setTimeout(performScroll, 300);
   };
 
-  // Keep the input & active popular-search highlight in sync with the URL,
-  // so they reset when the Reset button (or any navigation) clears ?q=.
+  // Keep the input in sync with the URL and scroll on query arrival
   useEffect(() => {
     setQuery(initialQuery);
+
+    if (!isFirstRender.current && initialQuery) {
+      scrollToResults();
+    }
+    isFirstRender.current = false;
   }, [initialQuery]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = query.trim();
-    if (trimmed) {
-      router.push(`${basePath}?q=${encodeURIComponent(trimmed)}`);
-    } else {
-      router.push(basePath);
-    }
     scrollToResults();
+
+    startTransition(() => {
+      if (trimmed) {
+        router.push(`${basePath}?q=${encodeURIComponent(trimmed)}`, { scroll: false });
+      } else {
+        router.push(basePath, { scroll: false });
+      }
+    });
   };
 
   const handleSuggestionClick = (name: string) => {
     setQuery(name);
-    router.push(`${basePath}?q=${encodeURIComponent(name)}`);
     scrollToResults();
+
+    startTransition(() => {
+      router.push(`${basePath}?q=${encodeURIComponent(name)}`, { scroll: false });
+    });
   };
 
   return (
@@ -126,9 +139,17 @@ export default function SearchForm({ initialQuery = "", searchType = "player" }:
         </div>
         <button
           type="submit"
-          className="mt-3 w-full rounded-xl bg-[#ff6b35] px-4 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#ff8555] active:scale-[0.98]"
+          disabled={isPending}
+          className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#ff6b35] px-4 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#ff8555] active:scale-[0.98] disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
         >
-          {buttonText}
+          {isPending ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Mencari...</span>
+            </>
+          ) : (
+            buttonText
+          )}
         </button>
       </form>
 
